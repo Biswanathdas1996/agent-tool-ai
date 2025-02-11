@@ -316,7 +316,9 @@ const Chat: React.FC = () => {
         UserStory: 
         ${userStory}
 
-        generate test cases for the above user story
+        Generate a HTML code of sample sets of test cases for the above user story
+
+        Use Table format for the test cases
 
         Follow the instructions: 
         ${instructionForTestCases}

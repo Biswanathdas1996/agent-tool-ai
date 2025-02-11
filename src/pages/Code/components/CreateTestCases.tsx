@@ -46,7 +46,10 @@ const CreateTestCases: React.FC<CreateTestCasesProps> = ({
       ) : (
         <>
           <div className="chat-msg-list msg-hldr-cb gap10px pre-div ">
-            <BoldText text={testCase} />
+            {/* <BoldText text={testCase} /> */}
+            <div
+              dangerouslySetInnerHTML={{ __html: testCase.replace("html", "") }}
+            />
           </div>
           <br />
 
