@@ -1,0 +1,554 @@
+{
+  "United States": [
+    "Bank of America",
+    "JPMorgan Chase",
+    "Wells Fargo",
+    "Citibank",
+    "Goldman Sachs"
+  ],
+  "United Kingdom": [
+    "HSBC",
+    "Barclays",
+    "Lloyds Bank",
+    "Standard Chartered",
+    "NatWest Group"
+  ],
+  "Germany": ["Deutsche Bank", "Commerzbank", "KfW", "DZ Bank", "BayernLB"],
+  "France": [
+    "BNP Paribas",
+    "Société Générale",
+    "Crédit Agricole",
+    "La Banque Postale",
+    "BPCE"
+  ],
+  "Canada": [
+    "Royal Bank of Canada",
+    "Toronto-Dominion Bank",
+    "Bank of Montreal",
+    "Scotiabank",
+    "CIBC"
+  ],
+  "India": [
+    "State Bank of India",
+    "HDFC Bank",
+    "ICICI Bank",
+    "Punjab National Bank",
+    "Axis Bank"
+  ],
+  "China": [
+    "Industrial and Commercial Bank of China",
+    "China Construction Bank",
+    "Agricultural Bank of China",
+    "Bank of China",
+    "Bank of Communications"
+  ],
+  "Japan": [
+    "Mitsubishi UFJ Financial Group",
+    "Sumitomo Mitsui Banking Corporation",
+    "Mizuho Financial Group",
+    "Resona Holdings",
+    "Shinsei Bank"
+  ],
+  "Australia": [
+    "Commonwealth Bank",
+    "Westpac",
+    "National Australia Bank",
+    "ANZ Banking Group",
+    "Macquarie Bank"
+  ],
+  "Brazil": [
+    "Itaú Unibanco",
+    "Banco do Brasil",
+    "Bradesco",
+    "Santander Brasil",
+    "Caixa Econômica Federal"
+  ],
+  "Switzerland": [
+    "UBS",
+    "Credit Suisse",
+    "Raiffeisen Switzerland",
+    "Zürcher Kantonalbank",
+    "PostFinance"
+  ],
+  "Singapore": [
+    "DBS Bank",
+    "United Overseas Bank",
+    "Oversea-Chinese Banking Corporation",
+    "Standard Chartered Singapore",
+    "HSBC Singapore"
+  ],
+  "United Arab Emirates": [
+    "Emirates NBD",
+    "Abu Dhabi Commercial Bank",
+    "First Abu Dhabi Bank",
+    "Dubai Islamic Bank",
+    "Mashreq Bank"
+  ],
+  "South Korea": [
+    "KB Kookmin Bank",
+    "Shinhan Bank",
+    "Hana Bank",
+    "Woori Bank",
+    "Industrial Bank of Korea"
+  ],
+  "Italy": [
+    "Intesa Sanpaolo",
+    "UniCredit",
+    "Monte dei Paschi di Siena",
+    "Banco BPM",
+    "UBI Banca"
+  ],
+  "Netherlands": [
+    "ING Group",
+    "ABN AMRO",
+    "Rabobank",
+    "De Volksbank",
+    "Triodos Bank"
+  ],
+  "Spain": ["Banco Santander", "BBVA", "CaixaBank", "Bankia", "Banco Sabadell"],
+  "Mexico": [
+    "BBVA Mexico",
+    "Banorte",
+    "Santander Mexico",
+    "Citibanamex",
+    "Scotiabank Mexico"
+  ],
+  "Russia": [
+    "Sberbank",
+    "VTB Bank",
+    "Gazprombank",
+    "Alfa-Bank",
+    "Rosselkhozbank"
+  ],
+  "South Africa": [
+    "Standard Bank",
+    "FirstRand Bank",
+    "Absa Group",
+    "Nedbank",
+    "Capitec Bank"
+  ],
+  "Argentina": [
+    "Banco de la Nación Argentina",
+    "Banco Galicia",
+    "Banco Macro",
+    "BBVA Argentina",
+    "Santander Argentina"
+  ],
+  "Turkey": ["Ziraat Bank", "Isbank", "Garanti BBVA", "Yapi Kredi", "Akbank"],
+  "Saudi Arabia": [
+    "Saudi National Bank",
+    "Al Rajhi Bank",
+    "Riyad Bank",
+    "Samba Financial Group",
+    "Banque Saudi Fransi"
+  ],
+  "Thailand": [
+    "Bangkok Bank",
+    "Kasikornbank",
+    "Krung Thai Bank",
+    "Siam Commercial Bank",
+    "TMBThanachart Bank"
+  ],
+  "Indonesia": [
+    "Bank Mandiri",
+    "Bank Rakyat Indonesia",
+    "Bank Central Asia",
+    "Bank Negara Indonesia",
+    "Bank Danamon"
+  ],
+  "Malaysia": [
+    "Maybank",
+    "CIMB Bank",
+    "Public Bank",
+    "RHB Bank",
+    "Hong Leong Bank"
+  ],
+  "Vietnam": ["Vietcombank", "BIDV", "VietinBank", "Techcombank", "MB Bank"],
+  "Sri Lanka": [
+    "Commercial Bank of Ceylon",
+    "Hatton National Bank",
+    "Sampath Bank",
+    "People's Bank",
+    "Bank of Ceylon"
+  ],
+  "Ecuador": [
+    "Banco Pichincha",
+    "Banco del Pacífico",
+    "Produbanco",
+    "Banco Internacional",
+    "Banco Guayaquil"
+  ],
+  "Bolivia": [
+    "Banco Nacional de Bolivia",
+    "Banco Mercantil Santa Cruz",
+    "Banco BISA",
+    "Banco Fassil",
+    "Banco de Crédito de Bolivia"
+  ],
+  "Paraguay": [
+    "Banco Itaú Paraguay",
+    "Banco Continental",
+    "Banco Nacional de Fomento",
+    "Vision Banco",
+    "Banco Regional"
+  ],
+  "Uruguay": [
+    "Banco República",
+    "Banco Santander Uruguay",
+    "BBVA Uruguay",
+    "Banco Itaú Uruguay",
+    "Scotiabank Uruguay"
+  ],
+  "Kenya": [
+    "Equity Bank",
+    "KCB Bank",
+    "Co-operative Bank of Kenya",
+    "NCBA Bank",
+    "Stanbic Bank Kenya"
+  ],
+  "Uganda": [
+    "Stanbic Bank Uganda",
+    "Centenary Bank",
+    "DFCU Bank",
+    "Equity Bank Uganda",
+    "Housing Finance Bank"
+  ],
+  "Ghana": [
+    "GCB Bank",
+    "Ecobank Ghana",
+    "Stanbic Bank Ghana",
+    "Absa Bank Ghana",
+    "Fidelity Bank Ghana"
+  ],
+  "Tanzania": [
+    "CRDB Bank",
+    "NMB Bank",
+    "Stanbic Bank Tanzania",
+    "NBC Tanzania",
+    "Equity Bank Tanzania"
+  ],
+  "Ethiopia": [
+    "Commercial Bank of Ethiopia",
+    "Dashen Bank",
+    "Awash Bank",
+    "Bank of Abyssinia",
+    "United Bank"
+  ],
+  "Mozambique": [
+    "Millennium BIM",
+    "BCI",
+    "Standard Bank Mozambique",
+    "Moza Banco",
+    "United Bank Mozambique"
+  ],
+  "Afghanistan": [
+    "Azizi Bank",
+    "Afghanistan International Bank",
+    "New Kabul Bank",
+    "Pashtany Bank",
+    "Maiwand Bank"
+  ],
+  "Albania": [
+    "Banka Kombëtare Tregtare",
+    "Raiffeisen Bank Albania",
+    "Credins Bank",
+    "Intesa Sanpaolo Bank Albania",
+    "Tirana Bank"
+  ],
+  "Algeria": [
+    "Banque Extérieure d'Algérie",
+    "Banque Nationale d'Algérie",
+    "Crédit Populaire d'Algérie",
+    "Société Générale Algérie",
+    "Arab Bank Algeria"
+  ],
+  "Andorra": [
+    "Andbank",
+    "Crèdit Andorrà",
+    "MoraBanc",
+    "BancSabadell d'Andorra",
+    "Vall Banc"
+  ],
+  "Angola": [
+    "Banco de Poupança e Crédito",
+    "Banco Angolano de Investimentos",
+    "Banco de Fomento Angola",
+    "Banco Sol",
+    "Banco Económico"
+  ],
+  "Armenia": [
+    "Ameriabank",
+    "Ardshinbank",
+    "Converse Bank",
+    "Inecobank",
+    "ACBA Bank"
+  ],
+  "Austria": [
+    "Erste Group",
+    "Raiffeisen Bank International",
+    "UniCredit Bank Austria",
+    "BAWAG P.S.K.",
+    "Oesterreichische Kontrollbank"
+  ],
+  "Azerbaijan": [
+    "International Bank of Azerbaijan",
+    "Pasha Bank",
+    "Kapital Bank",
+    "Xalq Bank",
+    "Bank Respublika"
+  ],
+  "Bangladesh": [
+    "Sonali Bank",
+    "Janata Bank",
+    "Islami Bank Bangladesh",
+    "Dutch-Bangla Bank",
+    "BRAC Bank"
+  ],
+  "Belarus": [
+    "Belarusbank",
+    "Belagroprombank",
+    "Priorbank",
+    "Belinvestbank",
+    "Alfa-Bank Belarus"
+  ],
+  "Belgium": [
+    "KBC Bank",
+    "Belfius",
+    "BNP Paribas Fortis",
+    "ING Belgium",
+    "Argenta"
+  ],
+  "Bosnia and Herzegovina": [
+    "Raiffeisen Bank Bosnia",
+    "UniCredit Bank Banja Luka",
+    "Intesa Sanpaolo Bank Bosnia",
+    "Sparkasse Bank",
+    "ASA Banka"
+  ],
+  "Bulgaria": [
+    "UniCredit Bulbank",
+    "DSK Bank",
+    "First Investment Bank",
+    "Postbank Bulgaria",
+    "United Bulgarian Bank"
+  ],
+  "Chile": [
+    "Banco de Chile",
+    "Banco Estado",
+    "Banco Santander Chile",
+    "Scotiabank Chile",
+    "Banco BCI"
+  ],
+  "Colombia": [
+    "Bancolombia",
+    "Banco de Bogotá",
+    "Davivienda",
+    "Banco Popular",
+    "Banco de Occidente"
+  ],
+  "Costa Rica": [
+    "Banco Nacional de Costa Rica",
+    "Banco de Costa Rica",
+    "BAC Credomatic",
+    "Scotiabank Costa Rica",
+    "Coopenae"
+  ],
+  "Czech Republic": [
+    "Česká spořitelna",
+    "Komerční banka",
+    "ČSOB",
+    "Raiffeisenbank Czech Republic",
+    "Moneta Money Bank"
+  ],
+  "Denmark": ["Danske Bank", "Nykredit", "Jyske Bank", "Sydbank", "Saxo Bank"],
+  "Egypt": [
+    "National Bank of Egypt",
+    "Banque Misr",
+    "Commercial International Bank",
+    "QNB Alahli",
+    "Arab African International Bank"
+  ],
+  "Estonia": [
+    "Swedbank Estonia",
+    "SEB Estonia",
+    "Luminor Bank",
+    "Coop Pank",
+    "LHV Pank"
+  ],
+  "Finland": [
+    "Nordea Finland",
+    "OP Financial Group",
+    "Säästöpankki",
+    "Aktia Bank",
+    "Handelsbanken Finland"
+  ],
+  "Greece": [
+    "National Bank of Greece",
+    "Piraeus Bank",
+    "Alpha Bank",
+    "Eurobank",
+    "Attica Bank"
+  ],
+  "Hungary": [
+    "OTP Bank",
+    "K&H Bank",
+    "MKB Bank",
+    "UniCredit Bank Hungary",
+    "CIB Bank"
+  ],
+  "Ireland": [
+    "Allied Irish Banks",
+    "Bank of Ireland",
+    "Permanent TSB",
+    "Ulster Bank Ireland",
+    "KBC Bank Ireland"
+  ],
+  "Israel": [
+    "Bank Hapoalim",
+    "Bank Leumi",
+    "Mizrahi Tefahot Bank",
+    "Discount Bank",
+    "First International Bank of Israel"
+  ],
+  "Jordan": [
+    "Arab Bank",
+    "Jordan Islamic Bank",
+    "Cairo Amman Bank",
+    "Housing Bank for Trade and Finance",
+    "Jordan Kuwait Bank"
+  ],
+  "Kazakhstan": [
+    "Halyk Bank",
+    "Kaspi Bank",
+    "ForteBank",
+    "Eurasian Bank",
+    "ATF Bank"
+  ],
+  "Lebanon": ["Bank Audi", "BLOM Bank", "Fransabank", "Byblos Bank", "SGBL"],
+  "Lithuania": [
+    "Swedbank Lithuania",
+    "SEB Lithuania",
+    "Luminor Lithuania",
+    "Šiaulių Bankas",
+    "Citadele Bank"
+  ],
+  "Morocco": [
+    "Attijariwafa Bank",
+    "Banque Populaire du Maroc",
+    "BMCE Bank",
+    "Crédit Agricole du Maroc",
+    "CIH Bank"
+  ],
+  "New Zealand": [
+    "ANZ New Zealand",
+    "ASB Bank",
+    "Bank of New Zealand",
+    "Kiwibank",
+    "Westpac New Zealand"
+  ],
+  "Norway": [
+    "DNB Bank",
+    "SpareBank 1",
+    "Handelsbanken Norway",
+    "Nordea Norway",
+    "Sbanken"
+  ],
+  "Pakistan": [
+    "Habib Bank Limited",
+    "United Bank Limited",
+    "MCB Bank",
+    "National Bank of Pakistan",
+    "Bank Alfalah"
+  ],
+  "Peru": [
+    "Banco de Crédito del Perú",
+    "Interbank",
+    "BBVA Perú",
+    "Scotiabank Perú",
+    "Banco Pichincha Perú"
+  ],
+  "Philippines": [
+    "BDO Unibank",
+    "Metrobank",
+    "Bank of the Philippine Islands",
+    "Land Bank of the Philippines",
+    "Security Bank"
+  ],
+  "Poland": [
+    "PKO Bank Polski",
+    "Pekao Bank",
+    "mBank",
+    "Santander Bank Polska",
+    "ING Bank Śląski"
+  ],
+  "Portugal": [
+    "Caixa Geral de Depósitos",
+    "Millennium BCP",
+    "Novo Banco",
+    "Banco Santander Totta",
+    "Banco BPI"
+  ],
+  "Qatar": [
+    "Qatar National Bank",
+    "Doha Bank",
+    "Commercial Bank of Qatar",
+    "Al Khaliji",
+    "Masraf Al Rayan"
+  ],
+  "Romania": [
+    "Banca Transilvania",
+    "BRD Groupe Société Générale",
+    "Raiffeisen Bank Romania",
+    "CEC Bank",
+    "UniCredit Bank Romania"
+  ],
+  "Serbia": [
+    "Banca Intesa Beograd",
+    "Raiffeisen Bank Serbia",
+    "UniCredit Bank Serbia",
+    "Komercijalna Banka",
+    "AIK Banka"
+  ],
+  "Slovakia": [
+    "Slovenská sporiteľňa",
+    "VÚB Banka",
+    "Tatra Banka",
+    "ČSOB Slovakia",
+    "Poštová banka"
+  ],
+  "Slovenia": [
+    "NLB Bank",
+    "Nova KBM",
+    "SKB Banka",
+    "UniCredit Banka Slovenia",
+    "Gorenjska Banka"
+  ],
+  "Sweden": [
+    "Swedbank",
+    "Handelsbanken",
+    "SEB Sweden",
+    "Nordea Sweden",
+    "Länsförsäkringar Bank"
+  ],
+  "Taiwan": [
+    "CTBC Bank",
+    "Taipei Fubon Bank",
+    "E.Sun Bank",
+    "Mega International Commercial Bank",
+    "Bank of Taiwan"
+  ],
+  "Ukraine": [
+    "PrivatBank",
+    "Oschadbank",
+    "Ukreximbank",
+    "Raiffeisen Bank Aval",
+    "UkrSibbank"
+  ],
+  "Venezuela": [
+    "Banco de Venezuela",
+    "Banesco",
+    "BBVA Provincial",
+    "Mercantil Banco",
+    "Banco Bicentenario"
+  ]
+}

@@ -96,6 +96,9 @@ export default function Config() {
   const [instructionForCode, setInstructionForCode] = useState<Field[]>([]);
 
   const [model, setModel] = React.useState("gpt-4o-mini");
+  const [questionPrompt, setQuestionPrompt] = React.useState(
+    localStorage.getItem("questionPrompt") || ""
+  );
 
   const handleChange = (event: SelectChangeEvent) => {
     setModel(event.target.value as string);
@@ -220,8 +223,24 @@ export default function Config() {
               />
             </>
           </Grid>
+          <Grid size={12}>
+            <>
+              <h4>Question Prompt</h4>
+              <TextField
+                fullWidth
+                id="question-prompt"
+                label="Question Prompt"
+                value={questionPrompt}
+                onChange={(e) => {
+                  setQuestionPrompt(e.target.value);
+                  localStorage.setItem("questionPrompt", e.target.value);
+                }}
+              />
+            </>
+          </Grid>
         </Grid>
         <br />
+
         <br />
         <br />
       </Box>

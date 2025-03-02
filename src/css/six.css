@@ -541,10 +541,10 @@ html {
   width: 100%;
 }
 
-tbody tr:first-child {
+/* tbody tr:first-child {
   background: #ff7f50 !important;
   color: rgb(167, 146, 146) !important;
-}
+} */
 
 .nav-menu-text {
   margin-left: 2rem;
