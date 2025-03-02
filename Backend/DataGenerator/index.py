@@ -7,11 +7,10 @@ import json
 from DataGenerator.helper import generate_bank_account_number, Generate_Bank_Name, get_random_bank, get_locale, get_currency_code, generate_transaction_reference, generate_address, generate_name
 
 
-
-
 try:
     with open('DataGenerator/banks.json', 'r', encoding='utf-8') as file:
         banks_data = json.load(file)
+        
 except (FileNotFoundError, json.JSONDecodeError):
     banks_data = {}
 
