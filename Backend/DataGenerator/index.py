@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from faker import Faker
 from datetime import datetime, timedelta
+from joblib import Parallel, delayed
 import random
 import pycountry
 import json
@@ -206,7 +207,8 @@ def generate_data():
     if message_type not in ["MT103", "MT202", "MT300", "MT540", "MT700"]:
         return jsonify({"error": "Invalid message type"}), 400
 
-    generated_data = [globals()[message_type](source_country, destination_country) for i in range(Number_Of_Records)]
+    # generated_data = [globals()[message_type](source_country, destination_country) for i in range(Number_Of_Records)]
+    generated_data = Parallel(n_jobs=-1)(delayed(globals()[message_type])(source_country, destination_country) for _ in range(Number_Of_Records))
     return jsonify(generated_data), 200
 
 
