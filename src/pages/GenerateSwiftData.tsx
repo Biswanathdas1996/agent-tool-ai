@@ -87,76 +87,86 @@ const GenerateSwiftData: React.FC = () => {
   return (
     <div>
       <h2>Data Generation</h2>
-      <FormControl fullWidth margin="normal">
-        <label style={{ color: "black" }}>Type</label>
-        <Select value={type} onChange={(e) => setType(e.target.value)}>
-          <MenuItem value="MT103">Customer Payments and Cheques</MenuItem>
-          <MenuItem value="MT202">Financial Institution Transfers</MenuItem>
-          <MenuItem value="MT300">Foreign Exchange and Money Market</MenuItem>
-          <MenuItem value="MT540">
-            Securities and Investment Transactions
-          </MenuItem>
-          <MenuItem value="MT700">Bill of Exchange and Guarantees</MenuItem>
-          {/* Add more options as needed */}
-        </Select>
-      </FormControl>
-
-      <FormControl fullWidth margin="normal">
-        <label style={{ color: "black" }}>Source Country</label>
-        <Select
-          value={sourceCountry}
-          onChange={(e) => setSourceCountry(e.target.value)}
-          native={false}
-          renderValue={(selected) => selected}
-        >
-          <MenuItem value="">
-            <em>None</em>
-          </MenuItem>
-          {countryData.map((country) => (
-            <MenuItem key={country} value={country}>
-              {country}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-
-      <FormControl fullWidth margin="normal">
-        <label style={{ color: "black" }}>Destination Country</label>
-        <Select
-          value={destinationCountry}
-          onChange={(e) => setDestinationCountry(e.target.value)}
-          native={false}
-          renderValue={(selected) => selected}
-        >
-          <MenuItem value="">
-            <em>None</em>
-          </MenuItem>
-          {countryData.map((country) => (
-            <MenuItem key={country} value={country}>
-              {country}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-
-      <FormControl fullWidth margin="normal">
-        <label style={{ color: "black" }}>Number of Records</label>
-        <TextField
-          type="number"
-          value={numberOfRecords}
-          onChange={(e) => setNumberOfRecords(e.target.value)}
-        />
-      </FormControl>
-      <br />
-      <Button
-        variant="contained"
-        color="warning"
-        size="large"
-        onClick={handleSubmit}
+      <Card
+        style={{ margin: "4rem", padding: "2rem", background: "#80808030" }}
       >
-        Generate
-      </Button>
+        <FormControl fullWidth margin="normal">
+          <label style={{ color: "black" }}>Type</label>
+          <Select
+            value={type}
+            onChange={(e) => setType(e.target.value)}
+            style={{ background: "white" }}
+          >
+            <MenuItem value="MT103">Customer Payments and Cheques</MenuItem>
+            <MenuItem value="MT202">Financial Institution Transfers</MenuItem>
+            <MenuItem value="MT300">Foreign Exchange and Money Market</MenuItem>
+            <MenuItem value="MT540">
+              Securities and Investment Transactions
+            </MenuItem>
+            <MenuItem value="MT700">Bill of Exchange and Guarantees</MenuItem>
+            {/* Add more options as needed */}
+          </Select>
+        </FormControl>
 
+        <FormControl fullWidth margin="normal">
+          <label style={{ color: "black" }}>Source Country</label>
+          <Select
+            value={sourceCountry}
+            onChange={(e) => setSourceCountry(e.target.value)}
+            native={false}
+            renderValue={(selected) => selected}
+            style={{ background: "white" }}
+          >
+            <MenuItem value="">
+              <em>None</em>
+            </MenuItem>
+            {countryData.map((country) => (
+              <MenuItem key={country} value={country}>
+                {country}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+
+        <FormControl fullWidth margin="normal">
+          <label style={{ color: "black" }}>Destination Country</label>
+          <Select
+            value={destinationCountry}
+            onChange={(e) => setDestinationCountry(e.target.value)}
+            native={false}
+            renderValue={(selected) => selected}
+            style={{ background: "white" }}
+          >
+            <MenuItem value="">
+              <em>None</em>
+            </MenuItem>
+            {countryData.map((country) => (
+              <MenuItem key={country} value={country}>
+                {country}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+
+        <FormControl fullWidth margin="normal">
+          <label style={{ color: "black" }}>Number of Records</label>
+          <TextField
+            type="number"
+            value={numberOfRecords}
+            onChange={(e) => setNumberOfRecords(e.target.value)}
+            style={{ background: "white" }}
+          />
+        </FormControl>
+        <br />
+        <Button
+          variant="contained"
+          color="warning"
+          size="large"
+          onClick={handleSubmit}
+        >
+          Generate
+        </Button>
+      </Card>
       <br />
       <br />
       {loading ? (
