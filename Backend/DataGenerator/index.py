@@ -59,6 +59,14 @@ def MT103(source_country, destination_country):
                 "name": receiver,
                 "accountNumber": receiver_bank_code
             },
+            "orderingInstitution": {
+                "name": sender_bank,
+                "bic": sender_bank_code
+            },
+            "beneficiaryInstitution": {
+                "name": receiver_bank,
+                "bic": receiver_bank_code
+            },
             "detailsOfCharges": "SHA"
         }
     }

@@ -191,16 +191,45 @@ const GenerateSwiftData: React.FC = () => {
                     <TableContainer component={Paper}>
                       <Table>
                         <TableHead>
-                          <TableRow style={{ backgroundColor: "#f5f5f5" }}>
+                          <TableRow
+                            style={{ backgroundColor: "rgb(239 108 0 / 78%)" }}
+                          >
                             {tableData.length > 0 &&
-                              Object.keys(tableData[0].swift).map((key) => (
-                                <TableCell key={key}>
-                                  {key
-                                    .replace(/([A-Z])/g, " $1")
-                                    .trim()
-                                    .replace(/^./, (str) => str.toUpperCase())}
-                                </TableCell>
-                              ))}
+                              Object.keys(tableData[0].swift)
+                                .sort((a, b) => {
+                                  const aIsString =
+                                    typeof tableData[0].swift[a] === "string";
+                                  const bIsString =
+                                    typeof tableData[0].swift[b] === "string";
+                                  return aIsString === bIsString
+                                    ? 0
+                                    : aIsString
+                                    ? -1
+                                    : 1;
+                                })
+                                .map((key) => (
+                                  <TableCell
+                                    key={key}
+                                    style={{
+                                      background: "rgb(237 108 2)",
+                                      color: "white",
+                                      whiteSpace: "nowrap",
+                                    }}
+                                    align={
+                                      typeof tableData[0].swift[key] ===
+                                      "number"
+                                        ? "right"
+                                        : "left"
+                                    }
+                                  >
+                                    {key
+                                      .replace(/([A-Z])/g, " $1")
+                                      .trim()
+                                      .replace(/^./, (str) =>
+                                        str.toUpperCase()
+                                      )}
+                                  </TableCell>
+                                ))}
                           </TableRow>
                         </TableHead>
                         <TableBody>
@@ -210,14 +239,74 @@ const GenerateSwiftData: React.FC = () => {
                               page * rowsPerPage + rowsPerPage
                             )
                             .map((data: any, index: number) => (
-                              <TableRow key={index}>
-                                {Object.values(data.swift).map((value, i) => (
-                                  <TableCell key={i}>
-                                    {typeof value === "object" && value !== null
-                                      ? JSON.stringify(value)
-                                      : String(value)}
-                                  </TableCell>
-                                ))}
+                              <TableRow
+                                key={index}
+                                style={{
+                                  backgroundColor:
+                                    index % 2 === 0 ? "#f5f5f5" : "white",
+                                }}
+                              >
+                                {Object.keys(data.swift)
+                                  .sort((a, b) => {
+                                    const aIsString =
+                                      typeof data.swift[a] === "string";
+                                    const bIsString =
+                                      typeof data.swift[b] === "string";
+                                    return aIsString === bIsString
+                                      ? 0
+                                      : aIsString
+                                      ? -1
+                                      : 1;
+                                  })
+                                  .map((key, i) => (
+                                    <TableCell
+                                      key={i}
+                                      align={
+                                        typeof data.swift[key] === "number"
+                                          ? "right"
+                                          : "left"
+                                      }
+                                      style={{
+                                        minWidth: "150px",
+                                        whiteSpace: "nowrap",
+                                      }}
+                                    >
+                                      {typeof data.swift[key] === "object" &&
+                                      data.swift[key] !== null ? (
+                                        <TableContainer component={Paper}>
+                                          <Table size="small">
+                                            <TableBody>
+                                              {Object.entries(
+                                                data.swift[key]
+                                              ).map(
+                                                (
+                                                  [nestedKey, nestedValue],
+                                                  nestedIndex
+                                                ) => (
+                                                  <TableRow key={nestedIndex}>
+                                                    <TableCell>
+                                                      {nestedKey}
+                                                    </TableCell>
+                                                    <TableCell>
+                                                      {typeof nestedValue ===
+                                                        "object" &&
+                                                      nestedValue !== null
+                                                        ? JSON.stringify(
+                                                            nestedValue
+                                                          )
+                                                        : String(nestedValue)}
+                                                    </TableCell>
+                                                  </TableRow>
+                                                )
+                                              )}
+                                            </TableBody>
+                                          </Table>
+                                        </TableContainer>
+                                      ) : (
+                                        String(data.swift[key])
+                                      )}
+                                    </TableCell>
+                                  ))}
                               </TableRow>
                             ))}
                         </TableBody>
