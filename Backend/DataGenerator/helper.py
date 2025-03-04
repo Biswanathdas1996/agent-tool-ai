@@ -93,17 +93,31 @@ def generate_transaction_reference():
     random_number = random.randint(100, 999)
     return f"{today}{random_letters}{random_number}"
 
+# def generate_address(country):
+#     """ Generate a realistic address specific to the given country. """
+#     locale = get_locale(country)
+#     fake = Faker(locale)
+#     return {
+#         "street": fake.street_name(),
+#         "house_number": fake.building_number(),
+#         "postal_code": fake.postcode(),
+#         "city": fake.city(),
+#         "country": country
+#     }
+
 def generate_address(country):
-    """ Generate a realistic address specific to the given country. """
+    """ Generate a realistic address following ISO 20022 format. """
     locale = get_locale(country)
     fake = Faker(locale)
     return {
-        "street": fake.street_name(),
-        "house_number": fake.building_number(),
-        "postal_code": fake.postcode(),
-        "city": fake.city(),
-        "country": country
+        "StreetName": fake.street_name(),
+        "BuildingNumber": fake.building_number(),
+        "PostCode": fake.postcode(),
+        "TownName": fake.city(),
+        "CountrySubDivision": fake.state() if hasattr(fake, "state") else "",
+        "Country": pycountry.countries.lookup(country).alpha_2
     }
+
 
 def generate_name(country):
     """ Generate a realistic name based on the given country. """
