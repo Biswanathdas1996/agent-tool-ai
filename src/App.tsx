@@ -1,8 +1,5 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-
-// import Home from "./pages/Home";
-
 import ChatWithUnstructure from "./pages/ChatWithUnstructure";
 import CodeReview from "./pages/CodeReview";
 import CodeDoc from "./pages/CodeDoc";
@@ -28,7 +25,6 @@ function App() {
         <PageLoader />
 
         <Routes>
-          {/* <Route path="/" element={<Home />} /> */}
           <Route
             path="/home"
             element={

@@ -63,21 +63,20 @@ def generate_html(description):
     no other text should be present in the output apart from the above.\n
     """
     print("Calling Gemini API to generate HTML code...")
-    response_code_LLM = call_gemini(prompt)
+    response_code_llm = call_gemini(prompt)
     
     print("Processing the response from Gemini API...")
-    response_code_LLM = re.sub(HTML_PATTERN, r'\1', response_code_LLM, flags=re.DOTALL).strip()
-    response_code_LLM = response_code_LLM.replace('<html lang="en">', "page_open_tag")
-    response_code_LLM = response_code_LLM.replace('</html>', "page_close_tag")
-    response_code_LLM = response_code_LLM.replace("html", "")
-    response_code_LLM = response_code_LLM.replace("page_open_tag", '<html lang="en">')
-    response_code_LLM = response_code_LLM.replace('page_close_tag', '</html>')
+    response_code_llm = re.sub(HTML_PATTERN, r'\1', response_code_llm, flags=re.DOTALL).strip()
+    response_code_llm = response_code_llm.replace('<html lang="en">', "page_open_tag")
+    response_code_llm = response_code_llm.replace('</html>', "page_close_tag")
+    response_code_llm = response_code_llm.replace("html", "")
+    response_code_llm = response_code_llm.replace("page_open_tag", '<html lang="en">')
+    response_code_llm = response_code_llm.replace('page_close_tag', '</html>')
 
     print("HTML code generated.")
-    return response_code_LLM
+    return response_code_llm
 FOLDER_PATH = "img_to_html/uploads"
 def save_image_file(image_file):
-    image_path = os.path.join(FOLDER_PATH, image_file.filename)
     os.makedirs(FOLDER_PATH, exist_ok=True)
     filename = secure_filename(image_file.filename)
     image_path = os.path.join(FOLDER_PATH, filename)

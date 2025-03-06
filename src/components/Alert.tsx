@@ -4,7 +4,7 @@ import AlertTitle from "@mui/material/AlertTitle";
 import CheckIcon from "@mui/icons-material/Check";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "../redux/store";
-import { showAlert, hideAlert } from "../redux/slices/alertSlice";
+import { hideAlert } from "../redux/slices/alertSlice";
 
 export default function SimpleAlert() {
   const alertData = useSelector((state: RootState) => state.alert);

@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { useState } from "react";
 import LineChart from "./LineChart";
 import BarChart from "./BarChart";
 import PirChart from "./PirChart";
@@ -11,7 +11,6 @@ import { addAnalitics } from "../redux/slices/chatSlices";
 import { Card } from "@mui/material";
 import ChartSwitch from "./ChartSwitch";
 import Loader from "./Loader";
-import { Button } from "@mui/material";
 import html2canvas from "html2canvas";
 import { useFetch } from "../hook/useFetch";
 
@@ -85,10 +84,10 @@ const DynamicChart: React.FC<any> = ({ index, chatData, chartConfig }) => {
 };
 
 const Home: React.FC<HomeProps> = ({ data, chatId }) => {
+  const [loading, setLoading] = useState<boolean>(false);
   if (!chatId) {
     return "Some Error Occured, switch back to table view";
   }
-  const [loading, setLoading] = useState<boolean>(false);
   const dispatch = useDispatch<AppDispatch>();
   const chatHistory = useSelector((state: RootState) => state.chat.value);
   const fetchData = useFetch();

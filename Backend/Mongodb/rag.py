@@ -149,7 +149,7 @@ def upload_files_data_mongo_api():
             return "No files provided", 400
         collection_name = request.form.get('collection_name')
         files = request.files.getlist('files')
-        result = upload_file_to_mongo_db(files, 'mongodb/uploads', collection_name)
+        upload_file_to_mongo_db(files, 'mongodb/uploads', collection_name)
         return jsonify({"message": f"Data inserted successfully for {collection_name}"}), 200
     except Exception as e:
         logging.error(f"Error in upload_files_data_mongo_api: {str(e)}")

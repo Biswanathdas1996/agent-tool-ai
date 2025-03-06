@@ -30,9 +30,9 @@ def insert_data():
         request_data = data.get('data')
         if request_data is None:
             return jsonify({"error": "No data provided"}), 400
-        result = collection.insert_one(dict(request_data))
+        collection.insert_one(dict(request_data))
         return jsonify({"message": f"Data inserted successfully on {os.environ['X-mongo-collection']}"}), 200
-    except Exception as e:
+    except Exception:
         return jsonify({"error": "Internal Server Error"}), 500
 
 def update_data_by_id():
