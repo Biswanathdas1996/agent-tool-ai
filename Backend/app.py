@@ -30,6 +30,7 @@ def create_app():
     - X-Ai-Model: Custom header for AI model selection.
     """
     app = Flask(__name__)
+    app.config['WTF_CSRF_ENABLED'] = False  # Disable CSRF protection
     
     try:
         app = render_mongo_pack(app)

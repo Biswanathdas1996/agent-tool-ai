@@ -9,7 +9,7 @@ def get_client():
             tlsAllowInvalidCertificates=True
         )
         return client
-    except Exception as e:
+    except Exception:
         # Log the exception without exposing sensitive information
         print("An error occurred while connecting to MongoDB.")
         return None

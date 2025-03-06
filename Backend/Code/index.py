@@ -15,20 +15,28 @@ def clear_folder(dest_folder):
     """
     Clear all files and directories in the specified folder.
     """
-    if os.path.exists(dest_folder):
-        for root, dirs, files in os.walk(dest_folder, topdown=False):
-            for name in files:
-                file_path = os.path.join(root, name)
-                try:
-                    os.remove(file_path)
-                except OSError as e:
-                    logging.error(f"Error removing file {file_path}: {e}")
-            for name in dirs:
-                dir_path = os.path.join(root, name)
-                try:
-                    os.rmdir(dir_path)
-                except OSError as e:
-                    logging.error(f"Error removing directory {dir_path}: {e}")
+    if not os.path.exists(dest_folder):
+        return
+
+    for root, dirs, files in os.walk(dest_folder, topdown=False):
+        for name in files:
+            file_path = os.path.join(root, name)
+            remove_file(file_path)
+        for name in dirs:
+            dir_path = os.path.join(root, name)
+            remove_dir(dir_path)
+
+def remove_file(file_path):
+    try:
+        os.remove(file_path)
+    except OSError as e:
+        logging.error(f"Error removing file {file_path}: {e}")
+
+def remove_dir(dir_path):
+    try:
+        os.rmdir(dir_path)
+    except OSError as e:
+        logging.error(f"Error removing directory {dir_path}: {e}")
 
 def submit_repo():
     try:
@@ -52,7 +60,7 @@ def submit_repo():
 
 def process_code():
     try:
-        data = process_folder()
+        process_folder()
         clear_folder(src_code_path)
         
         html_files = [f for f in os.listdir(report_path) if f.endswith('.html')]

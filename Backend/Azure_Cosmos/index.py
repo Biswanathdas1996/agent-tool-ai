@@ -8,9 +8,9 @@ from sentence_transformers import SentenceTransformer
 from secretes.secrets import AZURE_COSMOS_CONNECTION
 
 # Function to connect to MongoDB
-def get_client(AZURE_COSMOS_CONNECTION):
+def get_client(azure_cosmos_connection):
     try:
-        client = MongoClient(AZURE_COSMOS_CONNECTION, tls=True, tlsAllowInvalidCertificates=True)
+        client = MongoClient(azure_cosmos_connection, tls=True, tlsAllowInvalidCertificates=True)
         return client
     except pymongo_errors.ConnectionError as e:
         print(f"An error occurred while connecting to MongoDB: {e}")
