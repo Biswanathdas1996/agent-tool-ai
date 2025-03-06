@@ -4,12 +4,15 @@ import base64
 from io import BytesIO
 import re
 from flask import request, jsonify, stream_with_context, Flask
+from werkzeug.utils import secure_filename
 from secretes.secrets import GOOGLE_ING_MODEL_NAME, GEMINI_API_KEY
 from Gemini.gemini import call_gemini
 import google.generativeai as genai
 
 img_model = genai.GenerativeModel(model_name=GOOGLE_ING_MODEL_NAME)
 genai.configure(api_key=GEMINI_API_KEY)
+
+HTML_PATTERN = r'```html(.*?)```'
 
 def extract_image(file_path):
     try:
@@ -63,7 +66,7 @@ def generate_html(description):
     response_code_LLM = call_gemini(prompt)
     
     print("Processing the response from Gemini API...")
-    response_code_LLM = re.sub(r'```html(.*?)```', r'\1', response_code_LLM, flags=re.DOTALL).strip()
+    response_code_LLM = re.sub(HTML_PATTERN, r'\1', response_code_LLM, flags=re.DOTALL).strip()
     response_code_LLM = response_code_LLM.replace('<html lang="en">', "page_open_tag")
     response_code_LLM = response_code_LLM.replace('</html>', "page_close_tag")
     response_code_LLM = response_code_LLM.replace("html", "")
@@ -76,6 +79,8 @@ def generate_html(description):
 def save_image_file(image_file):
     image_path = os.path.join("img_to_html/uploads", image_file.filename)
     os.makedirs("img_to_html/uploads", exist_ok=True)
+    filename = secure_filename(image_file.filename)
+    image_path = os.path.join("img_to_html/uploads", filename)
     image_file.save(image_path)
     print(f"Image file saved to {image_path}.")
     return image_path
@@ -94,7 +99,8 @@ def generate_html_from_image():
         image_path = save_image_file(image_file)
         response = extract_image(image_path)
         html_code = generate_html(response)
-        html_content = re.search(r'```html(.*?)```', html_code, re.DOTALL)
+        
+        html_content = re.search(HTML_PATTERN, html_code, re.DOTALL)
         if html_content:
             html_code = html_content.group(1).strip()
         print("Returning generated HTML code.")
@@ -120,7 +126,7 @@ def generate(image_file):
         yield "Generating code with context...\n\n"
         html_code = generate_html(response)
         yield "Filtering the code\n\n"
-        html_content = re.search(r'```html(.*?)```', html_code, re.DOTALL)
+        html_content = re.search(HTML_PATTERN, html_code, re.DOTALL)
         if html_content:
             html_code = html_content.group(1).strip()
         yield "Code generated.\n\n"

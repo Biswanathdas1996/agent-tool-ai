@@ -99,7 +99,9 @@ def extract_img_api():
         if 'file' not in request.files:
             return jsonify({"error": "No file provided"}), 400
         file = request.files['file']
-        file_path = os.path.join(os.environ["IMG_UPLOAD_FOLDER"], file.filename)
+        from werkzeug.utils import secure_filename
+        filename = secure_filename(file.filename)
+        file_path = os.path.join(os.environ["IMG_UPLOAD_FOLDER"], filename)
         file.save(file_path)
         try:
             img_details = extract_image(file_path, TECHNOLOGY)
