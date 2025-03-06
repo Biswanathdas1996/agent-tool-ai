@@ -46,10 +46,7 @@ const MyPieChart: React.FC<MyPieChartProps> = ({ chatData, chartConfig }) => {
     // Sum the y-axis values for each group
     const result = Object.entries(groupedData).map(([groupKey, items]) => {
       const yAxisSums = yAxis.reduce((sumAcc, yKey) => {
-        sumAcc[yKey] = items.reduce(
-          (sum: number, item: DataType) => sum + (item[yKey] || 0),
-          0
-        );
+        sumAcc[yKey] = sumYAxisValues(items, yKey);
         return sumAcc;
       }, {} as { [key: string]: number });
 
@@ -87,5 +84,11 @@ const MyPieChart: React.FC<MyPieChartProps> = ({ chatData, chartConfig }) => {
     </ResponsiveContainer>
   );
 };
+
+function sumYAxisValues(items: any, yKey: string): number {
+  return items.reduce((sum: number, item: any) => {
+    return sum + (item[yKey] || 0);
+  }, 0);
+}
 
 export default MyPieChart;

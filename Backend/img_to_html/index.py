@@ -75,12 +75,12 @@ def generate_html(description):
 
     print("HTML code generated.")
     return response_code_LLM
-
+FOLDER_PATH = "img_to_html/uploads"
 def save_image_file(image_file):
-    image_path = os.path.join("img_to_html/uploads", image_file.filename)
-    os.makedirs("img_to_html/uploads", exist_ok=True)
+    image_path = os.path.join(FOLDER_PATH, image_file.filename)
+    os.makedirs(FOLDER_PATH, exist_ok=True)
     filename = secure_filename(image_file.filename)
-    image_path = os.path.join("img_to_html/uploads", filename)
+    image_path = os.path.join(FOLDER_PATH, filename)
     image_file.save(image_path)
     print(f"Image file saved to {image_path}.")
     return image_path

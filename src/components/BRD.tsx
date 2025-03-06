@@ -33,6 +33,21 @@ interface Input {
   };
 }
 
+const findRelationship = (
+  input: Input,
+  sourceTable: string,
+  targetTable: string
+) => {
+  for (const table in input) {
+    for (const rel of input[table].relationships) {
+      if (table === sourceTable && rel.target_table === targetTable) {
+        return rel;
+      }
+    }
+  }
+  return null;
+};
+
 const ERD = ({ input }: { input: Input }) => {
   const svgRef = useRef<SVGSVGElement | null>(null);
 
@@ -133,8 +148,10 @@ const ERD = ({ input }: { input: Input }) => {
       link.append("title").text((d) => {
         const sourceTable = d.source as unknown as Node;
         const targetTable = d.target as unknown as Node;
-        const relationship = input[sourceTable.id].relationships.find(
-          (rel) => rel.target_table === targetTable.id
+        const relationship = findRelationship(
+          input,
+          sourceTable.id,
+          targetTable.id
         );
         return relationship
           ? `FK: ${relationship.source_column} -> ${relationship.target_column}`

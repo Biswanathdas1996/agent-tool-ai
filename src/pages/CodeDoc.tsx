@@ -82,7 +82,7 @@ const Chat: React.FC = () => {
 
   const ptrocessFiles = async () => {
     setLoadingProcess(true);
-    var requestOptions: CloneRepoRequestOptions = {
+    const requestOptions: CloneRepoRequestOptions = {
       method: "GET",
       redirect: "follow",
     };
@@ -111,7 +111,7 @@ const Chat: React.FC = () => {
 
   const downloadZip = async () => {
     setLoadingDownload(true);
-    var requestOptions: CloneRepoRequestOptions = {
+    const requestOptions: CloneRepoRequestOptions = {
       method: "GET",
       redirect: "follow",
     };
