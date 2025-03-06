@@ -6,7 +6,7 @@ import random
 import json
 from DataGenerator.helper import  get_random_bank, get_currency_code, generate_transaction_reference, generate_address, generate_name
 
-app = Flask(__name__)
+
 
 def load_banks_data():
     try:
@@ -186,6 +186,4 @@ def render_data_generator(app):
     app.add_url_rule('/generate', 'generate_mt202_api', generate_data, methods=['POST'])
     return app
 
-if __name__ == "__main__":
-    app = render_data_generator(app)
-    app.run(debug=True)
+
