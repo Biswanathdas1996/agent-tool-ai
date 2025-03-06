@@ -3,7 +3,7 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from pymongo import MongoClient, errors as pymongo_errors
 import numpy as np
 import os
-from flask import Flask, request, jsonify
+from flask import request, jsonify
 from sentence_transformers import SentenceTransformer
 from secretes.secrets import AZURE_COSMOS_CONNECTION
 
@@ -111,7 +111,7 @@ def upload_files_data_mongo_api():
             return "No files provided", 400
         collection_name = request.form.get('collection_name')
         files = request.files.getlist('files')
-        result = upload_file_to_mongo_db(files, 'mongodb/uploads', collection_name)
+        upload_file_to_mongo_db(files, 'mongodb/uploads', collection_name)
         return jsonify({"message": f"Data inserted successfully for {collection_name}"}), 200
     except ValueError as e:
         return jsonify({"error": str(e)}), 400
@@ -145,14 +145,11 @@ def delete_collection_mongo_api():
     data = request.get_json()
     collection_name = data.get('collection_name')
     collection = get_collection(collection_name)
-    result = collection.drop()
+    collection.drop()
     return jsonify({"result": "Collection deleted"})
 
 def list_all_index_api():
-    data = request.args
-    
     client = get_client(AZURE_COSMOS_CONNECTION)
-    
     # Assuming you want to list all collections in the database
     db = client["rag_db"]
     collections = db.list_collection_names()
@@ -162,7 +159,6 @@ def get_query_results_mongo_api():
     data = request.json
     query_text = data.get('query')
     collection_name = data.get('collection_name')
-    top_k = data.get('top_k', 5)
     result = query_documents(query_text, collection_name, 5)
     formatted_results = {
         "results": [

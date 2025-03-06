@@ -6,7 +6,9 @@ from pymongo.operations import SearchIndexModel
 import time
 from flask import request, jsonify
 from Mongodb.client import get_Client
+import logging
 
+logging.basicConfig(level=logging.INFO)
 
 def get_collection(collection_name):
     try:
@@ -14,16 +16,16 @@ def get_collection(collection_name):
         collection = my_client["rag_db"][collection_name]
         return collection
     except Exception as e:
-        raise Exception(f"Error getting collection: {str(e)}")
-
+        logging.error(f"Error getting collection: {str(e)}")
+        raise
 
 def get_embedding(data, model):
     try:
         embedding = model.encode(data)
         return embedding.tolist()
     except Exception as e:
-        raise Exception(f"Error generating embedding: {str(e)}")
-
+        logging.error(f"Error generating embedding: {str(e)}")
+        raise
 
 def save_temp_file(files, folder_path):
     if not files:
@@ -35,22 +37,27 @@ def save_temp_file(files, folder_path):
             file.save(file_path)
             file_paths.append(file_path)
         except Exception as e:
+            logging.error(f"An error occurred while saving the file: {str(e)}")
             return f"An error occurred while saving the file: {str(e)}"
     return file_paths
 
+def process_files(files_path):
+    data = []
+    for path in files_path:
+        if os.path.exists(path) and os.path.getsize(path) > 0:
+            loader = PyPDFLoader(path)
+            data.extend(loader.load())
+        else:
+            raise FileNotFoundError(f"File {path} not found or is empty.")
+    return data
 
 def upload_file_to_mongo_db(files, save_file_path, collection_name):
     try:
         files_path = save_temp_file(files, save_file_path)
-        for path in files_path:
-            if os.path.exists(path) and os.path.getsize(path) > 0:
-                loader = PyPDFLoader(path)
-                data = loader.load()
-            else:
-                raise FileNotFoundError(f"File {path} not found or is empty.")
+        data = process_files(files_path)
         text_splitter = RecursiveCharacterTextSplitter(chunk_size=400, chunk_overlap=20)
         documents = text_splitter.split_documents(data)
-        print(f"Number of documents: {documents}")
+        logging.info(f"Number of documents: {len(documents)}")
         model = SentenceTransformer("nomic-ai/nomic-embed-text-v1", trust_remote_code=True)
         docs_to_insert = [{
             "text": doc.page_content,
@@ -63,8 +70,8 @@ def upload_file_to_mongo_db(files, save_file_path, collection_name):
         result = collection.insert_many(docs_to_insert)
         return result
     except Exception as e:
+        logging.error(f"An error occurred while inserting documents: {str(e)}")
         return f"An error occurred while inserting documents: {str(e)}"
-
 
 def indexing(collection_name):
     try:
@@ -84,20 +91,18 @@ def indexing(collection_name):
             type="vectorSearch"
         )
         collection.create_search_index(model=search_index_model)
-        print("Polling to check if the index is ready. This may take up to a minute.")
-        predicate = None
-        if predicate is None:
-            predicate = lambda index: index.get("queryable") is True
+        logging.info("Polling to check if the index is ready. This may take up to a minute.")
+        predicate = lambda index: index.get("queryable") is True
 
         while True:
             indices = list(collection.list_search_indexes(collection_name))
             if len(indices) and predicate(indices[0]):
                 break
             time.sleep(5)
-        print(collection_name + " is ready for querying.")
+        logging.info(f"{collection_name} is ready for querying.")
     except Exception as e:
-        raise Exception(f"Error indexing collection: {str(e)}")
-
+        logging.error(f"Error indexing collection: {str(e)}")
+        raise
 
 def get_query_results(query, index_name, no_of_results=5):
     try:
@@ -123,23 +128,20 @@ def get_query_results(query, index_name, no_of_results=5):
             }
         ]
         results = collection.aggregate(pipeline)
-        array_of_results = []
-        for doc in results:
-            array_of_results.append(doc)
-        return array_of_results
+        return list(results)
     except Exception as e:
-        raise Exception(f"Error getting query results: {str(e)}")
-
+        logging.error(f"Error getting query results: {str(e)}")
+        raise
 
 def collection_names():
     try:
         collection = get_collection("any")
         indexes = collection.database.list_collection_names()
-        print(indexes)
+        logging.info(indexes)
         return indexes
     except Exception as e:
-        raise Exception(f"Error listing indexes: {str(e)}")
-
+        logging.error(f"Error listing indexes: {str(e)}")
+        raise
 
 def upload_files_data_mongo_api():
     try:
@@ -148,36 +150,37 @@ def upload_files_data_mongo_api():
         collection_name = request.form.get('collection_name')
         files = request.files.getlist('files')
         result = upload_file_to_mongo_db(files, 'mongodb/uploads', collection_name)
-        return jsonify({f"message": "Data inserted successfully for {collection_name}"}), 200
+        return jsonify({"message": f"Data inserted successfully for {collection_name}"}), 200
     except Exception as e:
+        logging.error(f"Error in upload_files_data_mongo_api: {str(e)}")
         return jsonify({"error": str(e)}), 500
-
 
 def index_collextion_mongo_api():
     try:
         collection_name = request.form.get('collection_name')
-        result = indexing(collection_name)
-        return jsonify({f"message": "{collection_name} successfully indexed "}), 200
+        indexing(collection_name)
+        return jsonify({"message": f"{collection_name} successfully indexed "}), 200
     except Exception as e:
+        logging.error(f"Error in index_collextion_mongo_api: {str(e)}")
         return jsonify({"error": str(e)}), 500
-
 
 def delete_collection_mongo_api():
     try:
         collection_name = request.form.get('collection_name')
         collection = get_collection(collection_name)
         collection.drop()
-        return jsonify({f"message": "{collection_name} successfully deleted"}), 200
+        return jsonify({"message": f"{collection_name} successfully deleted"}), 200
     except Exception as e:
+        logging.error(f"Error in delete_collection_mongo_api: {str(e)}")
         return jsonify({"error": str(e)}), 500
 
 def list_all_index_api():
     try:
         result = collection_names()
-        return jsonify({f"collections": result}), 200
+        return jsonify({"collections": result}), 200
     except Exception as e:
+        logging.error(f"Error in list_all_index_api: {str(e)}")
         return jsonify({"error": str(e)}), 500
-
 
 def get_query_results_mongo_api():
     try:
@@ -186,11 +189,10 @@ def get_query_results_mongo_api():
         no_of_results = data.get('no_of_results')
         collection_name = data.get('collection_name')
         result = get_query_results(query, collection_name, no_of_results)
-        response_result = {"results": result}
-        return jsonify(response_result), 200
+        return jsonify({"results": result}), 200
     except Exception as e:
+        logging.error(f"Error in get_query_results_mongo_api: {str(e)}")
         return jsonify({"error": str(e)}), 500
-
 
 def render_mongo_pack(app):
     app.add_url_rule('/upload-collection-doc-mongo', 'upload_files_data_mongo', upload_files_data_mongo_api, methods=['POST'])

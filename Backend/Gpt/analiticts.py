@@ -1,20 +1,20 @@
 from Gpt.index import call_gpt
 from helper.utils import convert_to_json, convert_string_to_json
 
-sample_output = [
-  {
-    "x-axis": "field1",
-    "y-axis": ["field2"],
-    "type": "Bar Chart"
-  },
-  {
-    "x-axis": "field1",
-    "y-axis": ["field2", "field3"],
-    "type": "Line Chart"
-  }
+SAMPLE_OUTPUT = [
+    {
+        "x-axis": "field1",
+        "y-axis": ["field2"],
+        "type": "Bar Chart"
+    },
+    {
+        "x-axis": "field1",
+        "y-axis": ["field2", "field3"],
+        "type": "Line Chart"
+    }
 ]
 
-def get_analitics(sample_data):
+def get_analytics(sample_data):
     try:
         print("sample_data", sample_data)
         # Prepare the prompt for OpenAI
@@ -33,10 +33,10 @@ def get_analitics(sample_data):
             - The output should be based on the dataset provided.
             - only a json data no extra text
             -strict format of the  Output:
-            {sample_output}
+            {SAMPLE_OUTPUT}
         """
         # Call GPT to get the converted data
-        response = call_gpt("You are a good analitics expart", prompt, 1000)
+        response = call_gpt("You are a good analytics expert", prompt, 1000)
         return response
     except Exception as e:
         return {"error": str(e)}
@@ -47,14 +47,14 @@ def sample_result(result, sample_size=2):
     except Exception as e:
         return {"error": str(e)}
 
-def getAnalitics(result):
+def get_analytics_result(result):
     if isinstance(result, list):
         try:
             sampled_result = sample_result(convert_to_json(result))
-            analitics_string = get_analitics(sampled_result)
-            analitics = convert_string_to_json(analitics_string)
+            analytics_string = get_analytics(sampled_result)
+            analytics = convert_string_to_json(analytics_string)
         except Exception as e:
-            analitics = {"error": str(e)}
+            analytics = {"error": str(e)}
     else:
-        analitics = {}
-    return analitics
+        analytics = {}
+    return analytics

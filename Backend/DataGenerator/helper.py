@@ -1,17 +1,22 @@
 from flask import Flask, request, jsonify
 from faker import Faker
-from datetime import datetime, timedelta
+from datetime import datetime
 import random
 import pycountry
 import json
+import logging
 
+logging.basicConfig(level=logging.INFO)
 
-try:
-    with open('DataGenerator/banks.json', 'r', encoding='utf-8') as file:
-        banks_data = json.load(file)
-except (FileNotFoundError, json.JSONDecodeError):
-    banks_data = {}
+def load_banks_data(file_path):
+    try:
+        with open(file_path, 'r', encoding='utf-8') as file:
+            return json.load(file)
+    except (FileNotFoundError, json.JSONDecodeError) as e:
+        logging.error(f"Error loading banks data: {e}")
+        return {}
 
+banks_data = load_banks_data('DataGenerator/banks.json')
 
 def get_closest_country_name(input_name):
     """ Find the closest matching country name in the dataset. """
@@ -22,15 +27,14 @@ def get_closest_country_name(input_name):
             if input_name.lower() in country.lower():
                 return country
         return None
-    
-def Generate_Bank_Name(country_name):
+
+def generate_bank_name(country_name):
     """ Generates a default international bank name if the country is not found in banks.json """
-    
     with open("missedcountry.txt", "a") as f:
         f.write(country_name + "\n")
     fake = Faker()
     return f"{fake.company()} International Bank"
-   
+
 def get_random_bank(country_name):
     """ Fetch a random bank name from the given country. If not found, generate one. """
     closest_country = get_closest_country_name(country_name)
@@ -38,15 +42,14 @@ def get_random_bank(country_name):
         bank_list = banks_data[closest_country]
         if bank_list:
             return random.choice(bank_list)
-        else :
-            return "Bank of " + closest_country
-   
+        else:
+            return f"Bank of {closest_country}"
+    return generate_bank_name(country_name)
 
 def generate_bank_account_number(bank_name):
-    # Generate a random bank account number based on the bank name
+    """ Generate a random bank account number based on the bank name """
     random.seed(bank_name)
-    account_number = ''.join([str(random.randint(0, 9)) for _ in range(10)])
-    return account_number
+    return ''.join([str(random.randint(0, 9)) for _ in range(10)])
 
 def get_locale(country_name):
     """ Map country names to Faker locales for realistic data generation. """
@@ -87,23 +90,11 @@ def get_currency_code(country_name):
         return "USD"
 
 def generate_transaction_reference():
-    # Generating transaction reference as YYYYMMDDXXX###
+    """ Generate a transaction reference as YYYYMMDDXXX### """
     today = datetime.now().strftime('%Y%m%d')
     random_letters = Faker().bothify(text='???').upper()
     random_number = random.randint(100, 999)
     return f"{today}{random_letters}{random_number}"
-
-# def generate_address(country):
-#     """ Generate a realistic address specific to the given country. """
-#     locale = get_locale(country)
-#     fake = Faker(locale)
-#     return {
-#         "street": fake.street_name(),
-#         "house_number": fake.building_number(),
-#         "postal_code": fake.postcode(),
-#         "city": fake.city(),
-#         "country": country
-#     }
 
 def generate_address(country):
     """ Generate a realistic address following ISO 20022 format. """
@@ -118,11 +109,8 @@ def generate_address(country):
         "Country": pycountry.countries.lookup(country).alpha_2
     }
 
-
 def generate_name(country):
     """ Generate a realistic name based on the given country. """
     locale = get_locale(country)
     fake = Faker(locale)
     return fake.name()
-
-

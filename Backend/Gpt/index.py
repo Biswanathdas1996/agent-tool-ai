@@ -37,48 +37,39 @@ def call_gpt(config, prompt, max_tokens=50):
         return f"An error occurred: {e}"
 
 
-def extract_image_GPT(file_path):
+def extract_image(file_path, model_type):
     """Extract image details and convert to base64."""
     try:
         img = Image.open(file_path)
         buffered = BytesIO()
         img.save(buffered, format="PNG")
         img_base64 = base64.b64encode(buffered.getvalue()).decode('utf-8')
-        content = [
-            {
-                "type": "image_url",
-                "image_url": {
-                    "url": f"data:image/png;base64,{img_base64}"
+        if model_type == "GEMINI":
+            encoded_image = img_base64
+            mime_type = "image/png"
+            prompt = """ 
+                You are a good image reader.\n
+                describe the image in details.\n
+                get details color, size, position, and other details.\n
+            """
+            print("Generating content from image...")
+            response = img_model.generate_content([{'mime_type': mime_type, 'data': encoded_image}, prompt])
+            print("Content generated from image.")
+            return response.text
+        else:
+            content = [
+                {
+                    "type": "image_url",
+                    "image_url": {
+                        "url": f"data:image/png;base64,{img_base64}"
+                    }
                 }
-            }
-        ]
-        return call_gpt("You are a good image reader", content, max_tokens=2048)
-        
-    except Exception as e:
-        return f"An error occurred while processing the image: {e}"
-    
-
-def extract_image_GEMINI(file_path):
-    """Extract image details and convert to base64."""
-    try:
-        img = Image.open(file_path)
-        buffered = BytesIO()
-        img.save(buffered, format="PNG")
-        img_base64 = base64.b64encode(buffered.getvalue()).decode('utf-8')
-        encoded_image = img_base64
-        mime_type = "image/png"
-        prompt = """ 
-            You are a good image reader.\n
-            describe the image in details.\n
-            get details color, size, position, and other details.\n
-        """
-        print("Generating content from image...")
-        response = img_model.generate_content([{'mime_type': mime_type, 'data': encoded_image}, prompt])
-        print("Content generated from image.")
-        return response.text
+            ]
+            return call_gpt("You are a good image reader", content, max_tokens=2048)
     except Exception as e:
         print(f"An error occurred while extracting image content: {e}")
         return f"An error occurred while extracting image content: {e}"
+
 
 def direct_gpt_call():
     """Handle direct GPT call from the API."""
@@ -89,7 +80,7 @@ def direct_gpt_call():
         if not user_question:
             return jsonify({"error": "No question provided"}), 400
         try:
-            if(TECHNOLOGY == "GEMINI"):
+            if TECHNOLOGY == "GEMINI":
                 print("Using Gemini")
                 result_json = call_gemini(user_question)
             else:
@@ -101,6 +92,7 @@ def direct_gpt_call():
     except Exception as e:
         return jsonify({"error": f"Failed to process request: {e}"}), 500
 
+
 def extract_img_api():
     """Handle image extraction API call."""
     try:
@@ -110,15 +102,13 @@ def extract_img_api():
         file_path = os.path.join(os.environ["IMG_UPLOAD_FOLDER"], file.filename)
         file.save(file_path)
         try:
-            if(TECHNOLOGY == "GEMINI"):
-                img_details = extract_image_GEMINI(file_path)
-            else:     
-                img_details = extract_image_GPT(file_path)
+            img_details = extract_image(file_path, TECHNOLOGY)
             return jsonify({"details": img_details}), 200
         except Exception as e:
             return jsonify({"error": str(e)}), 500
     except Exception as e:
         return jsonify({"error": f"Failed to process request: {e}"}), 500
+
 
 def render_gpt_pack(app):
     """Register API routes with the Flask app."""

@@ -3,7 +3,7 @@ from PIL import Image  # type: ignore
 import base64
 from io import BytesIO
 import re
-from flask import request, jsonify, stream_with_context
+from flask import request, jsonify, stream_with_context, Flask
 from secretes.secrets import GOOGLE_ING_MODEL_NAME, GEMINI_API_KEY
 from Gemini.gemini import call_gemini
 import google.generativeai as genai
@@ -73,7 +73,12 @@ def generate_html(description):
     print("HTML code generated.")
     return response_code_LLM
 
-
+def save_image_file(image_file):
+    image_path = os.path.join("img_to_html/uploads", image_file.filename)
+    os.makedirs("img_to_html/uploads", exist_ok=True)
+    image_file.save(image_path)
+    print(f"Image file saved to {image_path}.")
+    return image_path
 
 def generate_html_from_image():
     if 'image' not in request.files:
@@ -86,10 +91,7 @@ def generate_html_from_image():
         return jsonify({"error": "No selected file"}), 400
 
     try:
-        image_path = os.path.join("img_to_html/uploads", image_file.filename)
-        os.makedirs("img_to_html/uploads", exist_ok=True)
-        image_file.save(image_path)
-        print(f"Image file saved to {image_path}.")
+        image_path = save_image_file(image_file)
         response = extract_image(image_path)
         html_code = generate_html(response)
         html_content = re.search(r'```html(.*?)```', html_code, re.DOTALL)
@@ -99,31 +101,29 @@ def generate_html_from_image():
         return jsonify({"html_code": html_code})
     except Exception as e:
         print(f"An error occurred: {e}")
-        
+        return jsonify({"error": str(e)}), 500
+
 @stream_with_context
 def generate(image_file):
-    
     if image_file.filename == '':
         yield f"data: {jsonify({'error': 'No selected file'}).get_data(as_text=True)}\n\n"
         return
 
     try:
-        yield f"Check raw image.\n\n"
-        image_path = os.path.join("img_to_html/uploads", image_file.filename)
-        os.makedirs("uploads", exist_ok=True)
-        image_file.save(image_path)
+        yield "Check raw image.\n\n"
+        image_path = save_image_file(image_file)
         yield f"Image file temporarily saved to {image_path}.\n\n"
-        yield f"Image Extraction started.\n\n"
+        yield "Image Extraction started.\n\n"
         response = extract_image(image_path)
-        yield f"Image content extracted successfully.\n\n"
+        yield "Image content extracted successfully.\n\n"
         yield response
-        yield f"Generating code with context...\n\n"
+        yield "Generating code with context...\n\n"
         html_code = generate_html(response)
-        yield f"Filtering the code\n\n"
+        yield "Filtering the code\n\n"
         html_content = re.search(r'```html(.*?)```', html_code, re.DOTALL)
         if html_content:
             html_code = html_content.group(1).strip()
-        yield f"Code generated.\n\n"
+        yield "Code generated.\n\n"
         yield f"final_data: {html_code}\n\n"
     except Exception as e:
         yield f"data: An error occurred: {e}\n\n"
@@ -131,12 +131,9 @@ def generate(image_file):
 def stream_html_generation(app):
     if 'image' not in request.files:
         return f"data: {jsonify({'error': 'No image file provided stream'}).get_data(as_text=True)}\n\n"
-        
 
     image_file = request.files['image']
     return app.response_class(generate(image_file), mimetype='text/event-stream')
-
-
 
 def render_img_to_html_pack(app):
     print("Adding URL rule for /generate-img-to-html...")

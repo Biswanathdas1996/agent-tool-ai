@@ -1,14 +1,15 @@
 from pymongo import MongoClient
+from secretes.secrets import MONGO_DB_ATLAS_CONNECTION
 
-
-def get_Client():
+def get_client():
     try:
         client = MongoClient(
-            "mongodb+srv://bd1:Papun$1996@cluster0.mehhr.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0&readPreference=primary",
+            MONGO_DB_ATLAS_CONNECTION,
             tls=True,
             tlsAllowInvalidCertificates=True
         )
         return client
     except Exception as e:
-        print(f"An error occurred while connecting to MongoDB: {e}")
+        # Log the exception without exposing sensitive information
+        print("An error occurred while connecting to MongoDB.")
         return None

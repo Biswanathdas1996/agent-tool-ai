@@ -15,7 +15,9 @@ from secretes.secrets import OPENAI_API_KEY
 
 def create_app():
     """
-     Modules and Packages:
+    Create and configure the Flask application.
+    
+    Modules and Packages:
     - render_mongo_pack: Integrates MongoDB related functionalities.
     - render_mongo_data_pack: Integrates MongoDB data handling functionalities.
     - render_ai_agent: Integrates AI agent functionalities.
@@ -29,16 +31,20 @@ def create_app():
     """
     app = Flask(__name__)
     
-    app = render_mongo_pack(app)
-    # app = render_cosmos_pack(app)
-    app = render_mongo_data_pack(app)
-    app = render_ai_agent(app)
-    app = render_deploy_agent(app)
-    app = render_code_review_agent(app)
-    app = render_gpt_pack(app)
-    app = render_img_to_html_pack(app)
-    app = render_code_compare_pack(app)
-    app = render_data_generator(app)
+    try:
+        app = render_mongo_pack(app)
+        # app = render_cosmos_pack(app)
+        app = render_mongo_data_pack(app)
+        app = render_ai_agent(app)
+        app = render_deploy_agent(app)
+        app = render_code_review_agent(app)
+        app = render_gpt_pack(app)
+        app = render_img_to_html_pack(app)
+        app = render_code_compare_pack(app)
+        app = render_data_generator(app)
+    except Exception as e:
+        app.logger.error(f"Error initializing modules: {e}")
+        raise
 
     CORS(app)
 
@@ -49,16 +55,20 @@ def create_app():
         os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
     except Exception as e:
         app.logger.error(f"Error setting environment variable: {e}")
+        raise
 
     @app.before_request
     def before_request():
         custom_header = request.headers.get('X-Ai-Model')
         if custom_header:
             os.environ["X-Ai-Model"] = custom_header
-            app.logger.info(f"X-Ai-Model header received")
+            app.logger.info(f"X-Ai-Model header received: {custom_header}")
 
     return app
 
 if __name__ == "__main__":
-    app = create_app()
-    app.run()
+    try:
+        app = create_app()
+        app.run()
+    except Exception as e:
+        print(f"Failed to start the application: {e}")

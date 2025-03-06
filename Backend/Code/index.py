@@ -1,12 +1,15 @@
 from flask import request, jsonify, send_file
 import os
 import zipfile
+import logging
 from .gitClone import clone_github_repo
 from .codeReview import process_folder
 
 report_path = './Code/report'
 src_code_path = './Code/src_code'
 zip_path = './Code/repo.zip'
+
+logging.basicConfig(level=logging.INFO)
 
 def clear_folder(dest_folder):
     """
@@ -15,9 +18,17 @@ def clear_folder(dest_folder):
     if os.path.exists(dest_folder):
         for root, dirs, files in os.walk(dest_folder, topdown=False):
             for name in files:
-                os.remove(os.path.join(root, name))
+                file_path = os.path.join(root, name)
+                try:
+                    os.remove(file_path)
+                except OSError as e:
+                    logging.error(f"Error removing file {file_path}: {e}")
             for name in dirs:
-                os.rmdir(os.path.join(root, name))
+                dir_path = os.path.join(root, name)
+                try:
+                    os.rmdir(dir_path)
+                except OSError as e:
+                    logging.error(f"Error removing directory {dir_path}: {e}")
 
 def submit_repo():
     try:
@@ -32,7 +43,11 @@ def submit_repo():
         
         result = clone_github_repo(git_repo_link)
         return jsonify({'result': result}), 200
+    except KeyError as e:
+        logging.error(f"KeyError: {e}")
+        return jsonify({'error': 'Invalid input data'}), 400
     except Exception as e:
+        logging.error(f"Exception: {e}")
         return jsonify({'error': str(e)}), 500
 
 def process_code():
@@ -47,7 +62,11 @@ def process_code():
         
         html_file_path = os.path.join(report_path, html_files[0])
         return send_file(html_file_path, as_attachment=True)
+    except FileNotFoundError as e:
+        logging.error(f"FileNotFoundError: {e}")
+        return jsonify({'error': 'File not found'}), 404
     except Exception as e:
+        logging.error(f"Exception: {e}")
         return jsonify({'error': str(e)}), 500
 
 def generate_doc_for_code_fn():
@@ -62,7 +81,11 @@ def generate_doc_for_code_fn():
         
         html_file_path = os.path.join(report_path, html_files[0])
         return send_file(html_file_path, as_attachment=True)
+    except FileNotFoundError as e:
+        logging.error(f"FileNotFoundError: {e}")
+        return jsonify({'error': 'File not found'}), 404
     except Exception as e:
+        logging.error(f"Exception: {e}")
         return jsonify({'error': str(e)}), 500
 
 def create_zip_of_repo(repo_path, zip_path):
@@ -70,8 +93,14 @@ def create_zip_of_repo(repo_path, zip_path):
         with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
             for root, dirs, files in os.walk(repo_path):
                 for file in files:
-                    zipf.write(os.path.join(root, file), os.path.relpath(os.path.join(root, file), repo_path))
+                    file_path = os.path.join(root, file)
+                    try:
+                        zipf.write(file_path, os.path.relpath(file_path, repo_path))
+                    except OSError as e:
+                        logging.error(f"Error adding file to zip {file_path}: {e}")
+                        raise
     except Exception as e:
+        logging.error(f"Exception: {e}")
         raise Exception(f"Error creating zip file: {str(e)}")
 
 def download_repo():
@@ -79,7 +108,11 @@ def download_repo():
         create_zip_of_repo(report_path, zip_path)
         clear_folder(report_path)
         return send_file(zip_path, as_attachment=True)
+    except FileNotFoundError as e:
+        logging.error(f"FileNotFoundError: {e}")
+        return jsonify({'error': 'File not found'}), 404
     except Exception as e:
+        logging.error(f"Exception: {e}")
         return jsonify({'error': str(e)}), 500
 
 def render_code_review_agent(app):

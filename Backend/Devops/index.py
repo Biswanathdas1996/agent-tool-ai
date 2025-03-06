@@ -1,21 +1,19 @@
-
 import uuid
-from secretes.secrets import NETLIFY_API_KEY
-
 import os
 import hashlib
 import requests
+import logging
 from flask import Flask, request, jsonify
+from secretes.secrets import NETLIFY_API_KEY
 
+# Configure logging
+logging.basicConfig(level=logging.INFO)
 
 # Replace these values with your own
 NETLIFY_TOKEN = NETLIFY_API_KEY
 SITE_NAME = f"your-site-name-{uuid.uuid4().hex[:8]}"  # Will be part of the URL, e.g., your-site-name.netlify.app
 
-
-
 def create_site():
-
     url = "https://api.netlify.com/api/v1/sites"
     headers = {
         "Authorization": f"Bearer {NETLIFY_TOKEN}",
@@ -24,7 +22,7 @@ def create_site():
     payload = {"body": {"name": SITE_NAME}}
     response = requests.post(url, json=payload, headers=headers)
     response.raise_for_status()
-    print("Site created successfully.")
+    logging.info("Site created successfully.")
     return response.json()
 
 def compute_sha1(file_path):
@@ -38,7 +36,7 @@ def deploy_file(site_id, file_path):
     sha1_hash, file_data = compute_sha1(file_path)
 
     # Step 1: Initiate deployment
-    print("Initiating deployment...")
+    logging.info("Initiating deployment...")
     url = f"https://api.netlify.com/api/v1/sites/{site_id}/deploys"
     headers = {
         "Authorization": f"Bearer {NETLIFY_TOKEN}",
@@ -49,26 +47,25 @@ def deploy_file(site_id, file_path):
     response.raise_for_status()
     deploy_data = response.json()
 
- 
     # Step 2: Upload missing files
     required_files = deploy_data.get("required", [])
     if not required_files:
-        print("No files to upload. Deployment complete.")
+        logging.info("No files to upload. Deployment complete.")
         return deploy_data
 
-    print("Uploading missing files...")
+    logging.info("Uploading missing files...")
     for file_hash in required_files:
         deploy_base_url = deploy_data.get("id")
         upload_url = f"https://api.netlify.com/api/v1/deploys/{deploy_base_url}/files/{file_hash}"
-        print(f"Uploading to {upload_url}...")
+        logging.info(f"Uploading to {upload_url}...")
         upload_response = requests.put(
             upload_url,
-            headers={"Authorization": f"Bearer {NETLIFY_TOKEN}","Content-Type": "application/octet-stream"},
+            headers={"Authorization": f"Bearer {NETLIFY_TOKEN}", "Content-Type": "application/octet-stream"},
             data=file_data,
         )
         upload_response.raise_for_status()
 
-    print("All files uploaded successfully.")
+    logging.info("All files uploaded successfully.")
     return deploy_data
 
 def convert_code_to_file(code):
@@ -87,21 +84,22 @@ def deploy():
     html_file_path = convert_code_to_file(code)
 
     try:
-        print("Creating Netlify site...")
+        logging.info("Creating Netlify site...")
         site = create_site()
         site_id = site["id"]
 
-        print("Deploying HTML file...")
+        logging.info("Deploying HTML file...")
         deploy = deploy_file(site_id, html_file_path)
 
         url = deploy.get("deploy_ssl_url") or deploy.get("url")
         return jsonify({"message": "Deployment successful!", "url": url}), 200
     except requests.exceptions.RequestException as e:
+        logging.error(f"Deployment failed: {e}")
         return jsonify({"error": str(e)}), 500
     finally:
-        os.remove(html_file_path)
+        if os.path.exists(html_file_path):
+            os.remove(html_file_path)
 
 def render_deploy_agent(app):
-    
     app.add_url_rule('/deploy', 'deploy_code_api', deploy, methods=['POST'])
     return app
