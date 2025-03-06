@@ -66,11 +66,7 @@ def create_app():
             os.environ["X-Ai-Model"] = custom_header
             app.logger.info(f"X-Ai-Model header received: {custom_header}")
 
-    @app.route('/some_route', methods=['POST'])
-    @csrf_exempt
-    def some_route():
-        # Your route logic here
-        pass
+    
 
     return app
 
