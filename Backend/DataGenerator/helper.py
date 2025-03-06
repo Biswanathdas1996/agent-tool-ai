@@ -46,7 +46,7 @@ def get_random_bank(country_name):
             return f"Bank of {closest_country}"
     return generate_bank_name(country_name)
 
-def generate_bank_account_number(bank_name):
+def generate_bank_account_number():
     """ Generate a random bank account number based on the bank name """
     # Removed seeding to ensure the pseudorandom number generator is safe
     return ''.join([str(random.SystemRandom().randint(0, 9)) for _ in range(10)])

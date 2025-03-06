@@ -10,9 +10,9 @@ def get_collection():
         collection = my_client["data_db"][collection_name]
         return collection
     except KeyError:
-        raise Exception("Environment variable 'X-mongo-collection' not set")
+        raise KeyError("Environment variable 'X-mongo-collection' not set")
     except Exception as e:
-        raise Exception(f"Error getting collection: {str(e)}")
+        raise ConnectionError(f"Error getting collection: {str(e)}")
 
 def handle_request_data():
     data = request.get_json()
@@ -33,7 +33,7 @@ def insert_data():
         result = collection.insert_one(dict(request_data))
         return jsonify({"message": f"Data inserted successfully on {os.environ['X-mongo-collection']}"}), 200
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return jsonify({"error": "Internal Server Error"}), 500
 
 def update_data_by_id():
     data, error_response, status_code = handle_request_data()

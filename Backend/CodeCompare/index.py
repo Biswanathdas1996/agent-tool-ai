@@ -12,7 +12,7 @@ def get_pr_code_changes(owner, repo, pr_number):
     
     if response.status_code != 200:
         logger.error(f"Failed to fetch PR data: {response.status_code}, {response.text}")
-        raise Exception(f"Failed to fetch PR data: {response.status_code}, {response.text}")
+        raise requests.exceptions.RequestException(f"Failed to fetch PR data: {response.status_code}, {response.text}")
     
     files = response.json()
     code_changes = ""

@@ -65,9 +65,7 @@ const MyBarChart: React.FC<MyBarChartProps> = ({ chatData, chartConfig }) => {
     // Sum the y-axis values for each group
     const result = Object.entries(groupedData).map(([groupKey, items]) => {
       const yAxisSums = yAxis.reduce((sumAcc, yKey) => {
-        const sum = items.reduce((sum: number, item: DataType) => {
-          return sum + (item[yKey] || 0);
-        }, 0);
+        const sum = calculateSum(items, yKey);
         sumAcc[yKey] = sum;
         return sumAcc;
       }, {} as { [key: string]: number });
@@ -114,5 +112,9 @@ const MyBarChart: React.FC<MyBarChartProps> = ({ chatData, chartConfig }) => {
     </ResponsiveContainer>
   );
 };
+
+function calculateSum(items: any[], yKey: string): number {
+  return items.reduce((sum, item) => sum + (item[yKey] || 0), 0);
+}
 
 export default MyBarChart;

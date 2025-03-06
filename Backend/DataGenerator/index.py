@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import request, jsonify
 from faker import Faker
 from datetime import datetime, timedelta
 from joblib import Parallel, delayed
@@ -73,7 +73,7 @@ def create_swift_message(message_type, base_data, additional_fields):
     swift_message["swift"].update(additional_fields)
     return swift_message
 
-def MT103(source_country, destination_country):
+def mt103(source_country, destination_country):
     base_data = generate_base_data(source_country, destination_country)
     additional_fields = {
         "category": "Customer Payments and Cheques",
@@ -89,7 +89,7 @@ def MT103(source_country, destination_country):
     }
     return create_swift_message("MT103", base_data, additional_fields)
 
-def MT202(source_country, destination_country):
+def mt202(source_country, destination_country):
     base_data = generate_base_data(source_country, destination_country)
     additional_fields = {
         "category": "Financial Institution Transfers",
@@ -97,7 +97,7 @@ def MT202(source_country, destination_country):
     }
     return create_swift_message("MT202", base_data, additional_fields)
 
-def MT300(source_country, destination_country):
+def mt300(source_country, destination_country):
     base_data = generate_base_data(source_country, destination_country)
     additional_fields = {
         "category": "Foreign Exchange and Money Market",
@@ -109,7 +109,7 @@ def MT300(source_country, destination_country):
     }
     return create_swift_message("MT300", base_data, additional_fields)
 
-def MT540(source_country, destination_country):
+def mt540(source_country, destination_country):
     base_data = generate_base_data(source_country, destination_country)
     additional_fields = {
         "category": "Securities and Investment Transactions",
@@ -123,7 +123,7 @@ def MT540(source_country, destination_country):
     }
     return create_swift_message("MT540", base_data, additional_fields)
 
-def MT700(source_country, destination_country):
+def mt700(source_country, destination_country):
     base_data = generate_base_data(source_country, destination_country)
     additional_fields = {
         "category": "Bill of Exchange and Guarantees",
@@ -180,7 +180,7 @@ def generate_data():
     if message_type not in ["MT103", "MT202", "MT300", "MT540", "MT700"]:
         return jsonify({"error": "Invalid message type"}), 400
 
-    generated_data = Parallel(n_jobs=-1)(delayed(globals()[message_type])(source_country, destination_country) for _ in range(number_of_records))
+    generated_data = Parallel(n_jobs=-1)(delayed(globals()[message_type.lower()])(source_country, destination_country) for _ in range(number_of_records))
     return jsonify(generated_data), 200
 
 def render_data_generator(app):
