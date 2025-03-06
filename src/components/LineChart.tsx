@@ -95,11 +95,7 @@ const MyBarChart: React.FC<MyBarChartProps> = ({ chatData, chartConfig }) => {
             position="insideBottom"
           />
         </XAxis>
-        <YAxis
-          stroke="var(--textColor)"
-          // tickFormatter={formatNumber}
-          tick={{ fontSize: 10 }}
-        ></YAxis>
+        <YAxis stroke="var(--textColor)" tick={{ fontSize: 10 }}></YAxis>
         <Tooltip />
         <Legend verticalAlign="top" height={36} />
 

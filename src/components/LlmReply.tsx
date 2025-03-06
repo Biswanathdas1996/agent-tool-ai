@@ -1,8 +1,6 @@
 import React from "react";
-
 import { QueryData } from "../types/LLM";
 import Table from "./Table";
-import Analyse from "./Analyse";
 import SqlUpdate from "./SqlUpdate";
 import { SAVE_QUERY } from "../config";
 import { useAlert } from "../hook/useAlert";
@@ -108,11 +106,7 @@ const LlmReply: React.FC<LlmReplyProps> = ({ chat, userQuestion }) => {
                 setLoadingUi={setLoadingUi}
               />
             )}
-            {showAnaliticsSection ? (
-              <Analyse data={message} chatId={id} />
-            ) : (
-              renderMessageContent()
-            )}
+            {showAnaliticsSection ? "" : renderMessageContent()}
           </div>
           <span className="chat-time chat-time-usr">{time}</span>
         </div>

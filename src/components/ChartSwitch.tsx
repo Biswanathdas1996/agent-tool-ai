@@ -89,7 +89,6 @@ const ChartSwitch: React.FC<ChartSwitchProps> = ({
       </div>
       <Button
         size="small"
-        // variant={chart === "Scatter Plot" ? "contained" : "outlined"}
         color="error"
         onClick={() => downloadChartAsImage()}
         style={styleObj}
