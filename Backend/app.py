@@ -1,5 +1,4 @@
 from flask import Flask, request
-from flask_cors import CORS
 import os
 from Mongodb.rag import render_mongo_pack
 from Mongodb.data_handling import render_mongo_data_pack
@@ -12,6 +11,7 @@ from img_to_html.index import render_img_to_html_pack
 from CodeCompare.index import render_code_compare_pack
 from DataGenerator.index import render_data_generator
 from secretes.secrets import OPENAI_API_KEY
+from flask_wtf.csrf import CSRFProtect, csrf_exempt
 
 def create_app():
     """
@@ -30,7 +30,8 @@ def create_app():
     - X-Ai-Model: Custom header for AI model selection.
     """
     app = Flask(__name__)
-    app.config['WTF_CSRF_ENABLED'] = True  # Disable CSRF protection
+    CSRFProtect(app)
+    app.config['WTF_CSRF_ENABLED'] = True  # Enable CSRF protection
     
     try:
         app = render_mongo_pack(app)
@@ -47,7 +48,7 @@ def create_app():
         app.logger.error(f"Error initializing modules: {e}")
         raise
 
-    CORS(app)
+
 
     os.environ["IMG_UPLOAD_FOLDER"] = 'Gpt/uploads'
     os.makedirs(os.environ["IMG_UPLOAD_FOLDER"], exist_ok=True)
@@ -64,6 +65,12 @@ def create_app():
         if custom_header:
             os.environ["X-Ai-Model"] = custom_header
             app.logger.info(f"X-Ai-Model header received: {custom_header}")
+
+    @app.route('/some_route', methods=['POST'])
+    @csrf_exempt
+    def some_route():
+        # Your route logic here
+        pass
 
     return app
 

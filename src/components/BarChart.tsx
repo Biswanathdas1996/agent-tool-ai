@@ -98,13 +98,7 @@ const MyBarChart: React.FC<MyBarChartProps> = ({ chatData, chartConfig }) => {
           stroke="var(--textColor)"
           tickFormatter={formatNumber}
           tick={{ fontSize: 10 }}
-        >
-          {/* <Label
-              value={`X Axis =  ${chartConfig["x-axis"]}`}
-              angle={90}
-              position="insideLeft"
-            /> */}
-        </YAxis>
+        ></YAxis>
         <Tooltip />
         <Legend verticalAlign="top" height={36} />
 
@@ -123,6 +117,3 @@ function sumItemsByKey(items: any[], yKey: string): number {
 }
 
 export default MyBarChart;
-// function sumItemsByKey(items: any, yKey: string): number {
-//   throw new Error("Function not implemented.");
-// }

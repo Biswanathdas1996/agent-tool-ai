@@ -41,7 +41,7 @@ def get_random_bank(country_name):
     if closest_country and closest_country in banks_data:
         bank_list = banks_data[closest_country]
         if bank_list:
-            return random.choice(bank_list)
+            return random.SystemRandom().choice(bank_list)
         else:
             return f"Bank of {closest_country}"
     return generate_bank_name(country_name)
@@ -93,7 +93,7 @@ def generate_transaction_reference():
     """ Generate a transaction reference as YYYYMMDDXXX### """
     today = datetime.now().strftime('%Y%m%d')
     random_letters = Faker().bothify(text='???').upper()
-    random_number = random.randint(100, 999)
+    random_number = random.SystemRandom().randint(100, 999)
     return f"{today}{random_letters}{random_number}"
 
 def generate_address(country):

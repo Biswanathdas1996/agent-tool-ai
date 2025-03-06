@@ -29,7 +29,7 @@ def compute_sha1(file_path):
     """Compute SHA-1 hash of a file."""
     with open(file_path, "rb") as f:
         file_data = f.read()
-    return hashlib.sha1(file_data).hexdigest(), file_data
+    return hashlib.sha256(file_data).hexdigest(), file_data
 
 def deploy_file(site_id, file_path):
     """Deploy an HTML file to Netlify."""

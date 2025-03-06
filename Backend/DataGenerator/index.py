@@ -19,7 +19,8 @@ banks_data = load_banks_data()
 
 def generate_base_data(source_country, destination_country):
     transaction_reference_number = generate_transaction_reference()
-    value_date = (datetime.now() - timedelta(days=random.randint(1, 100))).strftime('%Y-%m-%d')
+    import secrets
+    value_date = (datetime.now() - timedelta(days=secrets.randbelow(100) + 1)).strftime('%Y-%m-%d')
     currency = get_currency_code(destination_country)
     currency_pair = f"{get_currency_code(destination_country)}/{get_currency_code(source_country)}"
     amount = round(random.uniform(1000, 100000), 2)
