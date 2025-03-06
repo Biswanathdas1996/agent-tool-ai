@@ -117,7 +117,7 @@ def render_gpt_pack(app):
     try:
         app.add_url_rule('/call-gpt', 'call_gpt_api', direct_gpt_call, methods=['POST'])
         app.add_url_rule('/extract-img', 'extract_image_api', extract_img_api, methods=['POST'])
-        return app
     except Exception as e:
         print(f"An error occurred while registering routes: {e}")
-        return app
+        return None
+    return app

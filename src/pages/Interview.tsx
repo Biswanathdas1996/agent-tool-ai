@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Card, CardContent } from "@mui/material";
 import Button from "@mui/material/Button";
-import { Input } from "@mui/material";
-import SendIcon from "@mui/icons-material/Send";
-import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Loader from "../components/Loader";
 
-const API_KEY = "AIzaSyB6SXZ8k-Otk4NmfFvXK6lzqqRCScksku4";
+const API_KEY = process.env.GEMINI_API_KEY;
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
 
 interface Question {
