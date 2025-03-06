@@ -48,8 +48,8 @@ def get_random_bank(country_name):
 
 def generate_bank_account_number(bank_name):
     """ Generate a random bank account number based on the bank name """
-    random.seed(bank_name)
-    return ''.join([str(random.randint(0, 9)) for _ in range(10)])
+    # Removed seeding to ensure the pseudorandom number generator is safe
+    return ''.join([str(random.SystemRandom().randint(0, 9)) for _ in range(10)])
 
 def get_locale(country_name):
     """ Map country names to Faker locales for realistic data generation. """

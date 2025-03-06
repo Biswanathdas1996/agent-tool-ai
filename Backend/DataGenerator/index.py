@@ -6,7 +6,7 @@ import random
 import json
 from DataGenerator.helper import  get_random_bank, get_currency_code, generate_transaction_reference, generate_address, generate_name
 
-
+SENDER_BANK_CODE_PATTERN = '??????##XXX'
 
 def load_banks_data():
     try:
@@ -24,9 +24,10 @@ def generate_base_data(source_country, destination_country):
     currency_pair = f"{get_currency_code(destination_country)}/{get_currency_code(source_country)}"
     amount = round(random.uniform(1000, 100000), 2)
     sender_bank = get_random_bank(source_country)
-    sender_bank_code = Faker().bothify(text='??????##XXX').upper()
+    
+    sender_bank_code = Faker().bothify(text=SENDER_BANK_CODE_PATTERN).upper()
     receiver_bank = get_random_bank(destination_country)
-    receiver_bank_code = Faker().bothify(text='??????##XXX').upper()
+    receiver_bank_code = Faker().bothify(text=SENDER_BANK_CODE_PATTERN).upper()
     sender = {
         "name": generate_name(source_country),
         "address": generate_address(source_country)
@@ -127,10 +128,10 @@ def MT700(source_country, destination_country):
     additional_fields = {
         "category": "Bill of Exchange and Guarantees",
         "sequenceOfTotal": "1/1",
-        "formOfDocumentaryCredit": Faker().bothify(text='??????##XXX').upper(),
-        "documentaryCreditNumber": Faker().bothify(text='??????##XXX').upper(),
+        "formOfDocumentaryCredit": Faker().bothify(text=SENDER_BANK_CODE_PATTERN).upper(),
+        "documentaryCreditNumber": Faker().bothify(text=SENDER_BANK_CODE_PATTERN).upper(),
         "dateOfIssue": base_data["value_date"],
-        "applicableRules": Faker().bothify(text='??????##XXX').upper(),
+        "applicableRules": Faker().bothify(text=SENDER_BANK_CODE_PATTERN).upper(),
         "dateAndPlaceOfExpiry": {
             "date": base_data["value_date"],
             "place": "New York, USA"

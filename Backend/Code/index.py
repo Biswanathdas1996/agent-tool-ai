@@ -8,6 +8,7 @@ from .codeReview import process_folder
 report_path = './Code/report'
 src_code_path = './Code/src_code'
 zip_path = './Code/repo.zip'
+FILE_NOT_FOUND_ERROR = 'File not found'
 
 logging.basicConfig(level=logging.INFO)
 
@@ -72,14 +73,14 @@ def process_code():
         return send_file(html_file_path, as_attachment=True)
     except FileNotFoundError as e:
         logging.error(f"FileNotFoundError: {e}")
-        return jsonify({'error': 'File not found'}), 404
+        return jsonify({'error': FILE_NOT_FOUND_ERROR}), 404
     except Exception as e:
         logging.error(f"Exception: {e}")
         return jsonify({'error': str(e)}), 500
 
 def generate_doc_for_code_fn():
     try:
-        data = process_folder(generate_doc=True)
+        process_folder(generate_doc=True)
         clear_folder(src_code_path)
         
         html_files = [f for f in os.listdir(report_path) if f.endswith('.html')]
@@ -91,7 +92,7 @@ def generate_doc_for_code_fn():
         return send_file(html_file_path, as_attachment=True)
     except FileNotFoundError as e:
         logging.error(f"FileNotFoundError: {e}")
-        return jsonify({'error': 'File not found'}), 404
+        return jsonify({'error': FILE_NOT_FOUND_ERROR}), 404
     except Exception as e:
         logging.error(f"Exception: {e}")
         return jsonify({'error': str(e)}), 500
@@ -109,7 +110,7 @@ def create_zip_of_repo(repo_path, zip_path):
                         raise
     except Exception as e:
         logging.error(f"Exception: {e}")
-        raise Exception(f"Error creating zip file: {str(e)}")
+        raise zipfile.BadZipFile(f"Error creating zip file: {str(e)}")
 
 def download_repo():
     try:
@@ -118,7 +119,7 @@ def download_repo():
         return send_file(zip_path, as_attachment=True)
     except FileNotFoundError as e:
         logging.error(f"FileNotFoundError: {e}")
-        return jsonify({'error': 'File not found'}), 404
+        return jsonify({'error': FILE_NOT_FOUND_ERROR}), 404
     except Exception as e:
         logging.error(f"Exception: {e}")
         return jsonify({'error': str(e)}), 500
