@@ -93,8 +93,6 @@ const Home: React.FC<HomeProps> = ({ data, chatId }) => {
   const fetchData = useFetch();
   const chatData: any = chatHistory.find((chat) => chat.id === chatId);
 
-  const allData = chatData?.message?.result;
-
   interface RequestOptions extends RequestInit {
     body: string;
   }
