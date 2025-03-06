@@ -51,12 +51,14 @@ const Chatbot: React.FC = () => {
     try {
       const storedPrompt = `Generate a multiple-choice ${localStorage.getItem(
         "questionPrompt"
-      )} question in valid JSON format. Response format:
-{
-  "question": "What is ${localStorage.getItem("questionPrompt")}?",
-  "options": ["A programming language", "A coffee brand", "A database", "An operating system"],
-  "correctAnswer": "A programming language"
-}`;
+      )} question in valid JSON format.
+       Do not repeat the previous question. 
+      Response format:
+  {
+    "question": "What is ${localStorage.getItem("questionPrompt")}?",
+    "options": ["A programming language", "A coffee brand", "A database", "An operating system"],
+    "correctAnswer": "A programming language"
+  }`;
 
       const response = await fetch(API_URL, {
         method: "POST",
@@ -79,7 +81,19 @@ const Chatbot: React.FC = () => {
         data?.candidates?.[0]?.content?.parts?.[0]?.text || "{}";
       jsonResponse = jsonResponse.replace(/^```json|```/g, "").trim();
       const parsedQuestion: Question = JSON.parse(jsonResponse);
-      setCurrentQuestion(parsedQuestion);
+
+      // Check if the question already exists in the chat history
+      const isDuplicate = chat.some(
+        (entry) => entry.question === parsedQuestion.question
+      );
+
+      if (isDuplicate) {
+        // If duplicate, fetch a new question
+        fetchQuestion();
+      } else {
+        setCurrentQuestion(parsedQuestion);
+      }
+
       setLoading(false);
     } catch (error) {
       setLoading(false);
