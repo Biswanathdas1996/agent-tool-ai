@@ -1,0 +1,118 @@
+java
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Payroll {
+
+    static class Employee {
+        String empId;
+        String empName;
+        double grossSalary;
+        double taxDeduction;
+        double benefits;
+        double netSalary;
+
+        public Employee(String empId, String empName, double grossSalary, double taxDeduction, double benefits) {
+            this.empId = empId;
+            this.empName = empName;
+            this.grossSalary = grossSalary;
+            this.taxDeduction = taxDeduction;
+            this.benefits = benefits;
+            this.netSalary = calculateNetSalary();
+        }
+
+        private double calculateNetSalary() {
+            return grossSalary - taxDeduction + benefits;
+        }
+    }
+
+
+    public static void main(String[] args) {
+        String employeeDataFile = "EMPLOYEE.DAT";
+        String payrollReportFile = "PAYROLL-REPORT.TXT";
+
+
+        List<Employee> employees = readEmployeeData(employeeDataFile);
+
+        generatePayrollReport(employees, payrollReportFile);
+
+    }
+
+    private static List<Employee> readEmployeeData(String filename) {
+        List<Employee> employees = new ArrayList<>();
+        try {
+            List<String> lines = Files.readAllLines(Paths.get(filename));
+            for (String line : lines) {
+                String[] parts = line.split(","); // Assuming CSV format
+                if(parts.length == 5){
+                    employees.add(new Employee(parts[0], parts[1], Double.parseDouble(parts[2]), Double.parseDouble(parts[3]), Double.parseDouble(parts[4])));
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Error reading employee data: " + e.getMessage());
+        }
+        return employees;
+    }
+
+    private static void generatePayrollReport(List<Employee> employees, String filename) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(filename))) {
+            for (Employee employee : employees) {
+                writer.printf("%-10s %-30s %10.2f %10.2f %10.2f %10.2f%n",
+                        employee.empId, employee.empName, employee.grossSalary, employee.taxDeduction, employee.benefits, employee.netSalary);
+                System.out.println("Employee ID: " + employee.empId);
+                System.out.println("Name       : " + employee.empName);
+                System.out.println("Gross Salary: " + employee.grossSalary);
+                System.out.println("Tax Deduction: " + employee.taxDeduction);
+                System.out.println("Benefits    : " + employee.benefits);
+                System.out.println("Net Salary  : " + employee.netSalary);
+                System.out.println("---------------------------");
+
+            }
+        } catch (IOException e) {
+            System.err.println("Error writing payroll report: " + e.getMessage());
+        }
+    }
+}
+
+
+**To use this code:**
+
+1.  **Create `EMPLOYEE.DAT`:** Create a file named `EMPLOYEE.DAT` in the same directory as your Java file.  This file should contain employee data in CSV format (comma-separated values), with one employee per line.  Each line should have: `empId,empName,grossSalary,taxDeduction,benefits`.  For example:
+
+    
+    1234567890,John Doe,50000.00,10000.00,500.00
+    9876543210,Jane Smith,60000.00,12000.00,750.00
+    
+
+2.  **Compile and Run:** Compile and run the Java code.  It will create `PAYROLL-REPORT.TXT` containing the payroll report.
+
+
+**HTML Representation (of the Java code, not the report itself):**  It's not practical to directly embed the compiled Java bytecode into an HTML file.  However, you can display the Java source code within an HTML `<pre>` tag for readability:
+
+
+html
+<!DOCTYPE html>
+<html>
+<head>
+<title>Java Payroll Code</title>
+</head>
+<body>
+
+<h1>Java Payroll Program</h1>
+
+<pre>
+<code>
+//Java Code Here (Paste the Java code from above here)
+</code>
+</pre>
+
+</body>
+</html>
+
+
+Remember to replace the comment `//Java Code Here` with the actual Java code.  This HTML will display the Java code in a formatted, readable way within a web browser.  The generated `PAYROLL-REPORT.TXT` would need to be handled separately (e.g., displayed in another part of the HTML page using JavaScript or a server-side script).

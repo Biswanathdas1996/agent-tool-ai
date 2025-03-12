@@ -11,7 +11,8 @@ from img_to_html.index import render_img_to_html_pack
 from CodeCompare.index import render_code_compare_pack
 from DataGenerator.index import render_data_generator
 from secretes.secrets import OPENAI_API_KEY
-from flask_wtf.csrf import CSRFProtect, csrf_exempt
+from flask_wtf.csrf import CSRFProtect
+from flask_cors import CORS
 
 def create_app():
     """
@@ -30,8 +31,9 @@ def create_app():
     - X-Ai-Model: Custom header for AI model selection.
     """
     app = Flask(__name__)
-    CSRFProtect(app)
-    app.config['WTF_CSRF_ENABLED'] = True  # Enable CSRF protection
+    # CSRFProtect(app)
+    CORS(app)
+    # app.config['WTF_CSRF_ENABLED'] = False  # Enable CSRF protection
     
     try:
         app = render_mongo_pack(app)

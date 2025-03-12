@@ -121,3 +121,58 @@ def process_folder(generate_doc=False):
                     save_report(report, report_file_path)
     except Exception as e:
         print(f"Error processing folder: {e}")
+
+
+def transform_code(file_path, transform_to):
+    """
+    Analyze the code using OpenAI API and return a quality report.
+    """
+    try:
+        with open(file_path, 'r', encoding='utf-8') as file:
+            code_content = file.read()
+        prompt = f"""
+                    Transform the following code to {transform_to}. 
+                    and return as a HTML.
+
+                    Code:
+                    {code_content}
+                    \n\n
+                    Output format:\n
+                        updated  Code
+                    """
+        if TECHNOLOGY != "GEMINI":
+            print("Using OpenAI")
+            set_openai_api_key()
+            response = openai.ChatCompletion.create(
+                model="gpt-4o",
+                messages=[
+                    {"role": "system", "content": "You are a code quality analyzer."},
+                    {"role": "user", "content": prompt}
+                ]
+            )
+            return response['choices'][0]['message']['content']
+        else:
+            print("Using Gemini")
+            return call_gemini(prompt)    
+    
+    except Exception as e:
+        return f"Error analyzing code: {e}"
+    
+def process_transformer_folder(transform_from, transform_to):
+    """
+    Recursively process each file in the folder and generate a quality report.
+    """
+    try:
+        for root, _, files in os.walk(INPUT_FOLDER):
+            for file in files:
+                file_path = os.path.join(root, file)
+                if file_path.endswith((f'''{transform_from}''')):  # Add other extensions as needed
+                    print(f"Analyzing: {file_path}")
+                    report = transform_code(file_path, transform_to)
+                    
+                    # Save the report
+                    relative_path = os.path.splitext(os.path.relpath(file_path, INPUT_FOLDER))[0]
+                    report_file_path = os.path.join(OUTPUT_FOLDER, relative_path + ".report.html")
+                    save_report(report, report_file_path)
+    except Exception as e:
+        print(f"Error processing folder: {e}")

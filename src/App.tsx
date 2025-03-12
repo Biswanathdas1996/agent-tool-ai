@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import ChatWithUnstructure from "./pages/ChatWithUnstructure";
 import CodeReview from "./pages/CodeReview";
 import CodeDoc from "./pages/CodeDoc";
+import CodeTransformation from "./pages/CodeTransformation";
 import Layout from "./layout/index";
 import SimpleAlert from "./components/Alert";
 import PageLoader from "./components/PageLoader";
@@ -47,6 +48,7 @@ function App() {
           <Route path="/config" element={<Config />} />
           <Route path="/interview" element={<Interview />} />
           <Route path="/generate-swift-data" element={<GenerateSwiftData />} />
+          <Route path="/code-transformation" element={<CodeTransformation />} />
         </Routes>
       </Layout>
     </>

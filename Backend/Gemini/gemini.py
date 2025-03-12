@@ -12,7 +12,8 @@ def set_environment_variable(key, value):
     except Exception as e:
         print(f"Error setting environment variable: {e}")
 
-def call_gemini(model, prompt):
+def call_gemini( prompt):
+    model = genai.GenerativeModel(GOOGLE_MODEL_NAME)
     try:
         response = model.generate_content(prompt)
         return response.text.replace('```', '').replace('gherkin', '')

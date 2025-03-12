@@ -3,7 +3,7 @@ import os
 import zipfile
 import logging
 from .gitClone import clone_github_repo
-from .codeReview import process_folder
+from .codeReview import process_folder, process_transformer_folder
 
 report_path = './Code/report'
 src_code_path = './Code/src_code'
@@ -96,6 +96,29 @@ def generate_doc_for_code_fn():
     except Exception as e:
         logging.error(f"Exception: {e}")
         return jsonify({'error': str(e)}), 500
+    
+def transform_code():
+    data = request.get_json()
+    transform_from = data.get('transform_from')
+    transform_to = data.get('transform_to')
+
+    try:
+        process_transformer_folder(transform_from, transform_to)
+        clear_folder(src_code_path)
+        
+        html_files = [f for f in os.listdir(report_path) if f.endswith('.html')]
+        
+        if not html_files:
+            return jsonify({'error': 'No HTML files found in the reports folder'}), 404
+        
+        html_file_path = os.path.join(report_path, html_files[0])
+        return send_file(html_file_path, as_attachment=True)
+    except FileNotFoundError as e:
+        logging.error(f"FileNotFoundError: {e}")
+        return jsonify({'error': FILE_NOT_FOUND_ERROR}), 404
+    except Exception as e:
+        logging.error(f"Exception: {e}")
+        return jsonify({'error': str(e)}), 500
 
 def create_zip_of_repo(repo_path, zip_path):
     try:
@@ -129,4 +152,5 @@ def render_code_review_agent(app):
     app.add_url_rule('/process-code', 'process_folder_api', process_code, methods=['GET'])
     app.add_url_rule('/generate-doc', 'generate_doc_for_code_api', generate_doc_for_code_fn, methods=['GET'])
     app.add_url_rule('/download-repo', 'download_repo_api', download_repo, methods=['GET'])
+    app.add_url_rule('/transform-code', 'transform_code_api', transform_code, methods=['POST'])
     return app

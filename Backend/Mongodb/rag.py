@@ -5,14 +5,14 @@ import os
 from pymongo.operations import SearchIndexModel
 import time
 from flask import request, jsonify
-from Mongodb.client import get_Client
+from Mongodb.client import get_client
 import logging
 
 logging.basicConfig(level=logging.INFO)
 
 def get_collection(collection_name):
     try:
-        my_client = get_Client()
+        my_client = get_client()
         collection = my_client["rag_db"][collection_name]
         return collection
     except Exception as e:
@@ -200,4 +200,4 @@ def render_mongo_pack(app):
     app.add_url_rule('/delete-collection', 'delete_collection_mongo', delete_collection_mongo_api, methods=['POST'])
     app.add_url_rule('/list-index-mongo', 'list_all_index', list_all_index_api, methods=['GET'])
     app.add_url_rule('/get-context-mongo', 'get_query_results_mongo', get_query_results_mongo_api, methods=['POST'])
-    return app
+    return app 

@@ -1,12 +1,12 @@
 import os
 from flask import request, jsonify
 from bson import ObjectId
-from Mongodb.client import get_Client
+from Mongodb.client import get_client
 
 def get_collection():
     try:
         collection_name = os.environ["X-mongo-collection"]
-        my_client = get_Client()
+        my_client = get_client()
         collection = my_client["data_db"][collection_name]
         return collection
     except KeyError:
