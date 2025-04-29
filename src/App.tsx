@@ -17,6 +17,7 @@ import ImgToHtml from "./pages/ImgToHtml";
 import CompareCode from "./pages/CompareCode";
 import Interview from "./pages/Interview";
 import GenerateSwiftData from "./pages/GenerateSwiftData";
+import HtmlUpload from "./pages/HtmlUpload";
 
 function App() {
   return (
@@ -49,6 +50,7 @@ function App() {
           <Route path="/interview" element={<Interview />} />
           <Route path="/generate-swift-data" element={<GenerateSwiftData />} />
           <Route path="/code-transformation" element={<CodeTransformation />} />
+          <Route path="/html-upload" element={<HtmlUpload />} />
         </Routes>
       </Layout>
     </>

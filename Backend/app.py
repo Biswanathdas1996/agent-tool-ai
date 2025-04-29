@@ -13,6 +13,8 @@ from DataGenerator.index import render_data_generator
 from secretes.secrets import OPENAI_API_KEY
 from flask_wtf.csrf import CSRFProtect
 from flask_cors import CORS
+from TestScriptCustom.index import render_html_extract_elements
+
 
 def create_app():
     """
@@ -46,6 +48,7 @@ def create_app():
         app = render_img_to_html_pack(app)
         app = render_code_compare_pack(app)
         app = render_data_generator(app)
+        app = render_html_extract_elements(app)
     except Exception as e:
         app.logger.error(f"Error initializing modules: {e}")
         raise
@@ -75,6 +78,6 @@ def create_app():
 if __name__ == "__main__":
     try:
         app = create_app()
-        app.run()
+        app.run(debug=True)
     except Exception as e:
         print(f"Failed to start the application: {e}")

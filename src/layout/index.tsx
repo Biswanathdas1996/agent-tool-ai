@@ -73,6 +73,11 @@ const routes = [
     icon: () => <CompareIcon style={iconStyle} />,
   },
   {
+    path: "/html-upload",
+    name: "UI Element Identifier",
+    icon: () => <HtmlIcon style={iconStyle} />,
+  },
+  {
     path: "/upload",
     name: "Knowledge Base",
     icon: () => <UploadFileIcon style={iconStyle} />,

@@ -43,6 +43,8 @@ export const GET_DATA_BY_ID = `${BASE_URL}/get-data-by-id`;
 
 // mongo ----------------------------------
 
+export const HTML_UPLOAD = `${BASE_URL}/html_upload`;
+
 export const ANALITICS = USE_MOCK
   ? `${BASE_URL}/analitics-mock`
   : `${BASE_URL}/analitics`;
