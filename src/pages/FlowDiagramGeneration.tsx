@@ -3,6 +3,7 @@ import FlowDiagram from "../components/FlowDiagram";
 import { TextField, Button, Card } from "@mui/material";
 import { useFetch } from "../hook/useFetch";
 import { GENERATE_FLOW_CHART } from "../config";
+import Loader from "../components/Loader";
 
 const FlowDiagramGeneration: React.FC = () => {
   const [inputText, setInputText] = useState("");
@@ -11,6 +12,7 @@ const FlowDiagramGeneration: React.FC = () => {
   const fetchData = useFetch();
 
   const handleSubmit = () => {
+    setLoadingUi(true);
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
@@ -66,11 +68,13 @@ const FlowDiagramGeneration: React.FC = () => {
         </Button>
       </>
 
-      {responseData && (
-        <Card style={{ padding: 20, marginTop: 20, border: "1px solid #ccc" }}>
+      <Card style={{ padding: 20, marginTop: 20, border: "1px solid #ccc" }}>
+        {loadingUi ? (
+          <Loader showIcon={false} />
+        ) : (
           <FlowDiagram renderJson={responseData} />
-        </Card>
-      )}
+        )}
+      </Card>
     </div>
   );
 };

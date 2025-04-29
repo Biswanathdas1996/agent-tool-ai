@@ -174,16 +174,29 @@ interface FlowDiagramProps {
 }
 
 const FlowDiagram = ({ renderJson }: FlowDiagramProps) => {
+  if (!renderJson) {
+    return <div>No data available to render the flow diagram.</div>;
+  }
   const { nodes, edges } = renderJson;
   const [nodesState, setNodesState] = useNodesState(nodes);
   const [edgesState, setEdgesState] = useEdgesState(edges);
   return (
     <div style={{ height: 500, width: "100%" }}>
       <ReactFlow
-        nodes={nodesState}
+        nodes={nodesState.map((node) => ({
+          ...node,
+          style: {
+            ...node.style,
+            backgroundColor: "#f0f8ff", // Light blue background
+            border: "2px solid #007acc", // Blue border
+            borderRadius: "5px", // Rounded corners
+            color: "#333", // Text color
+            fontWeight: "bold", // Bold text
+          },
+        }))}
         edges={edgesState.map((edge) => ({
           ...edge,
-          type: "straight", // Ensures all edges are straight
+          type: "straight", // Change to "straight" for curved edges
         }))}
         fitView
         nodesDraggable
@@ -240,7 +253,7 @@ const FlowDiagram = ({ renderJson }: FlowDiagramProps) => {
         onConnect={(connection) => {
           const newEdge = {
             ...connection,
-            type: "straight", // Ensures new connections are straight
+            type: "straight", // Change to "straight" for curved edges
             label: prompt("Enter label for the new connection:", "") || "",
             labelBgStyle: {
               fill: "#fff",
