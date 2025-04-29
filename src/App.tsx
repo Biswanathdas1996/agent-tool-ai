@@ -18,7 +18,7 @@ import CompareCode from "./pages/CompareCode";
 import Interview from "./pages/Interview";
 import GenerateSwiftData from "./pages/GenerateSwiftData";
 import HtmlUpload from "./pages/HtmlUpload";
-import FlowDiagram from "./components/FlowDiagram";
+import FlowDiagram from "./pages/FlowDiagramGeneration";
 
 function App() {
   return (

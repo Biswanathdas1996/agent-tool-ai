@@ -14,7 +14,7 @@ from secretes.secrets import OPENAI_API_KEY
 from flask_wtf.csrf import CSRFProtect
 from flask_cors import CORS
 from TestScriptCustom.index import render_html_extract_elements
-
+from FlowChartGen.index import render_flow_diagram_gen
 
 def create_app():
     """
@@ -41,6 +41,7 @@ def create_app():
         app = render_mongo_pack(app)
         # app = render_cosmos_pack(app)
         app = render_mongo_data_pack(app)
+        app = render_flow_diagram_gen(app)
         app = render_ai_agent(app)
         app = render_deploy_agent(app)
         app = render_code_review_agent(app)
