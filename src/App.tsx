@@ -18,6 +18,7 @@ import CompareCode from "./pages/CompareCode";
 import Interview from "./pages/Interview";
 import GenerateSwiftData from "./pages/GenerateSwiftData";
 import HtmlUpload from "./pages/HtmlUpload";
+import FlowDiagram from "./components/FlowDiagram";
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
             }
           />
 
+          <Route path="/flow" element={<FlowDiagram />} />
           <Route path="/data-chat" element={<ChatWithUnstructure />} />
           <Route path="/code-review" element={<CodeReview />} />
           <Route path="/code-doc" element={<CodeDoc />} />
