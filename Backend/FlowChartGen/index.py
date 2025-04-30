@@ -24,36 +24,36 @@ class Flowchart(BaseModel):
 
 
 sample_output = {
-        "nodes": [
-            {
-                "id": "{start_node_id}",
-                "type": "input",
-                "data": {"label": "{start_label}"},
-                "position": {"x": 0, "y": 0}
-            },
-            {
-                "id": "{step1_node_id}",
-                "data": {"label": "{step1_label}"},
-                "position": {"x": 100, "y": 100}
-            },
-            {
-                "id": "{end_node_id}",
-                "data": {"label": "{end_label}"},
-                "position": {"x": 200, "y": 200}
-            }
-        ],
-        "edges": [
-            {
-                "id": "e{start_node_id}-{step1_node_id}",
-                "source": "{start_node_id}",
-                "target": "{step1_node_id}"
-            },
-            {
-                "id": "e{step1_node_id}-{end_node_id}",
-                "source": "{step1_node_id}",
-                "target": "{end_node_id}"
-            }
-        ]
+    "nodes": [
+        {
+        "id": "{start_node_id}",
+        "type": "input",
+        "data": {"label": "{start_label}", "shape": "choose any one between triangle or pentagon or square"},
+        "position": {"x": 150, "y": 50}
+        },
+        {
+        "id": "{step1_node_id}",
+        "data": {"label": "{step1_label}", "shape": "choose any one between triangle or pentagon or square"},
+        "position": {"x": 150, "y": 150}
+        },
+        {
+        "id": "{end_node_id}",
+        "data": {"label": "{end_label}", "shape": "choose any one between triangle or pentagon or square"},
+        "position": {"x": 150, "y": 250}
+        }
+    ],
+    "edges": [
+        {
+        "id": "e{start_node_id}-{step1_node_id}",
+        "source": "{start_node_id}",
+        "target": "{step1_node_id}"
+        },
+        {
+        "id": "e{step1_node_id}-{end_node_id}",
+        "source": "{step1_node_id}",
+        "target": "{end_node_id}"
+        }
+    ]
     }
 
 def generate_flowchart_description(api_key, model_name,  flowchart_description, sample_output):
