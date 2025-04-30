@@ -45,12 +45,16 @@ const FlowDiagramGeneration: React.FC = () => {
       <h2>Flow Diagram Generation</h2>
 
       <>
-        <TextField
-          label="Enter text"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          multiline
+        <textarea
+          style={{
+            width: "95%",
+            margin: "10px 0",
+            padding: "10px",
+            fontSize: "16px",
+            borderRadius: "4px",
+            border: "1px solid #ccc",
+            resize: "vertical",
+          }}
           rows={4}
           value={inputText}
           onChange={(e) => setInputText(e.target.value)}

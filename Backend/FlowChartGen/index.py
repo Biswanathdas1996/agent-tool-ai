@@ -56,12 +56,14 @@ sample_output = {
         ]
     }
 
-def generate_flowchart_description(api_key, model_name, flowchart_title, flowchart_description, sample_output):
+def generate_flowchart_description(api_key, model_name,  flowchart_description, sample_output):
     client = genai.Client(api_key=api_key)
     response = client.models.generate_content(
         model=model_name,
-        contents=f"""The flowchart titled "{flowchart_title}" is designed to {flowchart_description}.
-        
+        contents=f"""
+            Generate a json that will represent a flow chart\n
+            This flowchart is designed to :{flowchart_description}.
+        \n
         Sample output: 
         {sample_output}
         """,
@@ -74,13 +76,11 @@ def generate_flowchart_description(api_key, model_name, flowchart_title, flowcha
 
 def generate_flowchart():
     data = request.get_json()
-    flowchart_title = data.get('title', 'Untitled Flowchart')
     flowchart_description = data.get('description', '')
     
     response_text = generate_flowchart_description(
         api_key=GEMINI_API_KEY,
         model_name='gemini-2.0-flash',
-        flowchart_title=flowchart_title,
         flowchart_description=flowchart_description,
         sample_output=sample_output
     )
