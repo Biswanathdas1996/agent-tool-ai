@@ -304,14 +304,20 @@ const Chat: React.FC = () => {
     }
   };
 
-  const generateTestCases = async () => {
+  interface GenerateTestCasesResponse {
+    testcaseData: string | null;
+  }
+
+  const generateTestCases = async (
+    customTestScriptPrompts?: string
+  ): Promise<GenerateTestCasesResponse | null> => {
     setTestCaseLoading(true);
     try {
-      const instructionForTestCases = getInstructions(
+      const instructionForTestCases: string = getInstructions(
         "instructionForTestCases"
       );
 
-      const testcaseData = await callGpt(
+      const testcaseData: string | null = await callGpt(
         `
         UserStory: 
         ${userStory}
@@ -321,6 +327,7 @@ const Chat: React.FC = () => {
         Use Table format for the test cases
 
         Follow the instructions: 
+        ${customTestScriptPrompts}
         ${instructionForTestCases}
         `
       );
@@ -329,7 +336,7 @@ const Chat: React.FC = () => {
       if (testcaseData) {
         localStorage.setItem("testcase", testcaseData);
       }
-      return testcaseData;
+      return { testcaseData };
     } catch (error) {
       console.error("Error generating test cases:", error);
       triggerAlert("Failed to generate test cases", "error");
@@ -811,15 +818,20 @@ const Chat: React.FC = () => {
               )}
               testCase={() => (
                 <>
-                  {testCase && (
-                    <CreateTestCases
-                      testCase={testCase}
-                      setTestCase={setTestCase}
-                      generateTestCases={generateTestCases}
-                      generateTestData={generateTestData}
-                    />
+                  {testCaseLoading ? (
+                    <Loader text="Generatting test cases" />
+                  ) : (
+                    <>
+                      {testCase && (
+                        <CreateTestCases
+                          testCase={testCase}
+                          setTestCase={setTestCase}
+                          generateTestCases={generateTestCases}
+                          generateTestData={generateTestData}
+                        />
+                      )}
+                    </>
                   )}
-                  {testCaseLoading && <Loader text="Generatting test cases" />}
                 </>
               )}
               testData={() => (
