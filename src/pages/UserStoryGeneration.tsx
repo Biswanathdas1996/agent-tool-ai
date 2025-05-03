@@ -266,7 +266,12 @@ const Chat: React.FC = () => {
     generateUserStory(query);
   };
 
-  const generateUserStory = async (query: string) => {
+  const generateUserStory = async (
+    queryInput?: string,
+    customPrompts?: string
+  ) => {
+    console.log("===============customPrompts===>", customPrompts);
+    const query = queryInput || userQuery;
     if (!query) return;
     setUserQuery(query);
 
@@ -288,6 +293,7 @@ const Chat: React.FC = () => {
         Write an elaborate agile user story in Gherkin format for ${query}
         Include Acceptance Criteria, Assumptions, and Dependencies
         ${instructionForUserStories}
+        ${customPrompts}
         Context of the story should be: ${effectiveContext}
         Do not add any point that is not related to the context
       `);
@@ -346,7 +352,7 @@ const Chat: React.FC = () => {
     }
   };
 
-  const generateTestData = async () => {
+  const generateTestData = async (customPrompts?: string) => {
     setTestDataLoading(true);
     try {
       const instructionForTestData = getInstructions("instructionForTestData");
@@ -359,6 +365,7 @@ const Chat: React.FC = () => {
         Generate a HTML code of sample sets of test data for the above TestCase 
 
         Follow the instructions: 
+        ${customPrompts || ""}
         ${instructionForTestData}
         `
       );
@@ -805,15 +812,22 @@ const Chat: React.FC = () => {
               )}
               userStory={() => (
                 <>
-                  {userStory && (
-                    <CreateUserStory
-                      userStory={userStory}
-                      setUserStory={setUserStory}
-                      testCase={testCase}
-                      generateTestCases={generateTestCases}
-                    />
+                  {userStoryLoading ? (
+                    <Loader text="Generating user story" />
+                  ) : (
+                    <>
+                      {" "}
+                      {userStory && (
+                        <CreateUserStory
+                          userStory={userStory}
+                          setUserStory={setUserStory}
+                          testCase={testCase}
+                          generateUserStory={generateUserStory}
+                          generateTestCases={generateTestCases}
+                        />
+                      )}
+                    </>
                   )}
-                  {userStoryLoading && <Loader text="Generatting user story" />}
                 </>
               )}
               testCase={() => (

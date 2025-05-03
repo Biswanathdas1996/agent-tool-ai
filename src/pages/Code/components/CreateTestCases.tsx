@@ -6,7 +6,7 @@ import { Card } from "@mui/material";
 interface CreateTestCasesProps {
   testCase: string;
   setTestCase: (value: string) => void;
-  generateTestCases: (customTestScriptPrompts: string) => void;
+  generateTestCases: (customPrompts: string) => void;
   generateTestData: () => void;
 }
 
@@ -18,8 +18,7 @@ const CreateTestCases: React.FC<CreateTestCasesProps> = ({
 }) => {
   const [edit, setEdit] = React.useState(false);
   const [reGenerate, setRegenerate] = React.useState(false);
-  const [customTestScriptPrompts, setCustomTestScriptPrompts] =
-    React.useState("");
+  const [customPrompts, setCustomPrompts] = React.useState("");
 
   return (
     <div>
@@ -63,16 +62,16 @@ const CreateTestCases: React.FC<CreateTestCasesProps> = ({
               <h3>Customize test script</h3>
               <textarea
                 style={{ width: "100%", height: "200px", marginTop: "10px" }}
-                value={customTestScriptPrompts}
-                onChange={(e) => setCustomTestScriptPrompts(e.target.value)}
-                placeholder="Enter custom test script prompts here"
+                value={customPrompts}
+                onChange={(e) => setCustomPrompts(e.target.value)}
+                placeholder="Enter custom prompts here"
               />
               <div style={{ display: "flex", justifyContent: "flex-end" }}>
                 <button
                   className="newConversationButton"
                   style={{ width: "100px" }}
                   onClick={() => {
-                    generateTestCases(customTestScriptPrompts);
+                    generateTestCases(customPrompts);
                     setRegenerate(false);
                   }}
                 >
